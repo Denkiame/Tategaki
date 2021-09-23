@@ -1,17 +1,9 @@
-enum StringFormatGuide {
-    default = 'default',
-    cjkPunc = 'cjk-punc',
-    latin = 'latin',
-    ambiguous = 'ambiguous',
-}
+import { StringFormatSegment, StringFormatGuide } from './formatSegment'
 
-interface StringFormatSegment {
-    content: string
-    formatGuide: StringFormatGuide
-}
-
-declare interface String {
-    segmentise(re: RegExp): StringFormatSegment[]
+declare global {
+    interface String {
+        segmentise(re: RegExp): StringFormatSegment[]
+    }
 }
 
 String.prototype.segmentise = function (re) {
@@ -26,7 +18,16 @@ String.prototype.segmentise = function (re) {
                 formatGuide: StringFormatGuide.default
             })
         }
-        let formatGuide = match[1] ? StringFormatGuide.cjkPunc : StringFormatGuide.latin
+
+        let formatGuide: StringFormatGuide
+        if (match[1]) {
+            formatGuide = StringFormatGuide.cjkPunc
+        } else if (match[2]) {
+            formatGuide = StringFormatGuide.latin
+        } else if (match[3]) {
+            formatGuide = StringFormatGuide.ambiguous
+        }
+
         segments.push({
             content: match[0],
             formatGuide: formatGuide

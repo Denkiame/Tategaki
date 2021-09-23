@@ -1,6 +1,9 @@
+import { StringFormatSegment } from './formatSegment'
+
 export interface Unit {
     readonly nodeName: string
     children?: Unit[]
+    attributes?: NamedNodeMap
 
     add?(unit: Unit): void
 }
@@ -9,22 +12,24 @@ export interface Unit {
 export class ParaUnit implements Unit {
     nodeName: string
     children: Unit[] = []
+    attributes: NamedNodeMap
+
     isBasePara: boolean = false
 
     add(unit: Unit) { this.children.push(unit) }
 
-    constructor(nodeName: string = 'P') {
+    constructor(nodeName: string = 'P', attributes: NamedNodeMap) {
         this.nodeName = nodeName
+        this.attributes = attributes
     }
 }
 
 export class StringUnit implements Unit {
     nodeName = '#text'
-    content: string
-    formatGuide = StringFormatGuide.default
+    segments: StringFormatSegment[]
 
-    constructor(content: string) {
-        this.content = content
+    constructor(segments: StringFormatSegment[]) {
+        this.segments = segments
     }
 }
 
@@ -32,10 +37,12 @@ export class StringUnit implements Unit {
 export class StyledUnit implements Unit {
     nodeName: string
     children: Unit[] = []
+    attributes: NamedNodeMap
 
     add(unit: Unit) { this.children.push(unit) }
     
-    constructor(nodeName: string) {
+    constructor(nodeName: string, attributes: NamedNodeMap) {
         this.nodeName = nodeName
+        this.attributes = attributes
     }
 }
