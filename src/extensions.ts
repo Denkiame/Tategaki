@@ -23,8 +23,10 @@ String.prototype.segmentise = function (re) {
         if (match[1]) {
             formatGuide = StringFormatGuide.cjkPunc
         } else if (match[2]) {
-            formatGuide = StringFormatGuide.latin
+            formatGuide = StringFormatGuide.fullwidthAlphabet
         } else if (match[3]) {
+            formatGuide = StringFormatGuide.latin
+        } else if (match[4]) {
             formatGuide = StringFormatGuide.ambiguous
         }
 

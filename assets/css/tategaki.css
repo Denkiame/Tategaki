@@ -9,6 +9,11 @@
 .latin {
     -webkit-hyphens: auto;
     hyphens: auto;
+
+    -webkit-hyphenate-limit-before: 3;
+    -webkit-hyphenate-limit-after: 2;
+    -ms-hyphenate-limit-chars: 6 3 2;
+    hyphenate-limit-chars: 6 3 2;
 }
 
 .tcy {

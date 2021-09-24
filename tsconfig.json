@@ -4,6 +4,7 @@
         "moduleResolution": "Node",
         "noImplicitAny": true,
         "outDir": "./dist",
-        "rootDirs": [ "./src", "./test" ]
+        "rootDirs": [ "./src", "./test" ],
+        "sourceMap": true
     }
 }
