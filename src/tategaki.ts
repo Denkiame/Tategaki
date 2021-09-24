@@ -161,12 +161,28 @@ export class Tategaki {
         })
     }
 
+    private correctAmbiguous() {
+        Array.from(document.getElementsByClassName(StringFormatGuide.ambiguous), element => {
+            if (element.previousElementSibling && 
+                element.previousElementSibling.classList.contains(StringFormatGuide.latin) &&
+                element.nextElementSibling &&
+                element.nextElementSibling.classList.contains(StringFormatGuide.latin)) { return }
+            
+            if (element.innerHTML === '/') {
+                element.innerHTML = '／'
+            }
+        })
+
+    }
+
     parse() {
         this.format(this.rootElement)
 
         this.rootElement.classList.add(this.imitatePcS ? 'imitate-pcs' : 'opentype-pcs')
 
         this.tcy(this.imitateTransfromToFullWidth)
+
+        this.correctAmbiguous()
     }
 
     constructor(rootElement: HTMLElement, 

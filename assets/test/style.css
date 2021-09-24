@@ -1,12 +1,10 @@
-* { margin: 0; padding: 0 }
-
 :root {
     --foreground-colour: #000a0cf5;
     --background-colour: #fdfdfc;
     --secondary-colour: #787f86;
     --a-colour: #0e697e;
     --a-visited-colour: #084452;
-    --selection-colour: #12788f33;
+    --selection-colour: #12788f32;
     --img-onhover-colour: rgba(0, 0, 0, .06);
 }
 
@@ -17,7 +15,7 @@
         --secondary-colour: #c5c9ce;
         --a-colour: #91d6e5;
         --a-visited-colour: #56b8cd;
-        --selection-colour: #91d6e533;
+        --selection-colour: #91d6e532;
         --img-onhover-colour: rgba(255, 255, 255, .06); 
     }
 
@@ -33,6 +31,12 @@ html {
     line-height: 1.667;
 }
 
+* {
+    margin: 0; padding: 0;
+    font-size: 1rem;
+}
+
+/* Typography */
 body {
     color: var(--foreground-colour);
     font-family: source-han-serif-tc, source-han-serif-sc, source-han-serif-japanese, 'STSong', 'SimSun', serif;
@@ -45,41 +49,41 @@ body {
     overflow-y: hidden;
 }
 
+.latin {
+    font-family: 'Crimson Pro', Garamond, Georgia, serif;
+    font-weight: 429;
+
+    position: relative;
+    left: 0.083rem;
+}
+
+/* Article */
 article {
     display: block;
     height: 32rem;
     margin: 3.334rem;
 }
 
-h1, p, blockquote, h3 {
-    font-size: 1rem;
-    margin: 0;
+.after-article {
+    width: 1.667rem;
+    margin: 0 -0.833rem;
 }
 
-small {
-    font-size: 0.75rem;
+.after-article:last-child {
+    width: 0.833rem;
 }
 
-.heading {
-    margin-left: 5rem; /* 3lh */
-}
+.headline { margin-left: 5rem; /* 3lh */ }
+.info { text-indent: 0; }
 
-h1, h2, h3 {
-    font-size: 1rem;
-    font-weight: 900;
-}
+/* Headings */
+h1, h2, h3 { font-weight: 900; }
+h1 { font-family: Helvetica, sans-serif; }
+h2 { margin: 0 3.334rem 0 1.667rem; /* 2lh 1lh */ }
+h3 { margin-right: 1.667rem; }
 
-h1 {
-    font-family: Helvetica, sans-serif;
-}
-
-h2 {
-    margin: 0 3.334rem 0 1.667rem; /* 2lh 1lh */
-}
-
-h3 {
-    margin-right: 1.667rem;
-}
+/* Styled Text */
+small { font-size: 0.75rem; }
 
 p, blockquote {
     text-align: justify;
@@ -92,17 +96,11 @@ blockquote {
     padding-top: 14px;
 }
 
-em {
-    font-style: normal;
-    text-emphasis: '\25AA';
-    -webkit-text-emphasis: '\25AA';
-    /* Would it be nice if offset can be customised */
-}
-
-em .latin {
-    font-style: italic;
-    text-emphasis: none;
-    -webkit-text-emphasis: none;
+h1.latin, h1 .latin {
+    font-family: Helvetica, sans-serif;
+    font-weight: 900;
+    position: unset;
+    left: unset;
 }
 
 a {
@@ -116,36 +114,7 @@ a:hover {
     color: var(--a-visited-colour);
 }
 
-ul {
-    list-style-type: '\25AA\0020';
-}
-
-ol {
-    list-style-type: trad-chinese-informal;
-    list-style-position: inside;
-}
-
-ol li {
-    margin: 0;
-    text-indent: 1rem;
-    text-align: justify;
-}
-
-hr {
-    border: none;
-    margin: 0;
-}
-
-hr::before {
-    content: "❧";
-    display: block;
-    text-align: center;
-    margin: 0 1.667rem;
-
-    position: relative;
-    left: 0.273rem;
-}
-
+/* Image */
 img {
     max-height: 30rem;
 }
@@ -173,53 +142,58 @@ figcaption {
     margin: 1rem 0;
 }
 
-.latin {
-    font-family: 'Crimson Pro', Garamond, Georgia, serif;
-    font-weight: 429;
+b, strong { font-weight: 900; }
+b.latin, b .latin, strong.latin, strong .latin { font-weight: 686; }
+
+/* CJK Emphasis  */
+em  {
+    font-style: normal;
+    text-emphasis: '\25AA';
+    -webkit-text-emphasis: '\25AA';
+    /* Would it be nice if offset can be customised */
+}
+
+em.latin, em .latin {
+    font-style: italic;
+    text-emphasis: none;
+    -webkit-text-emphasis: none;
+}
+
+/* Lists */
+ul { list-style-type: '\25AA\0020'; }
+
+ol {
+    list-style-type: trad-chinese-informal;
+    list-style-position: inside;
+}
+
+ol li {
+    margin: 0;
+    text-indent: 1rem;
+    text-align: justify;
+}
+
+hr {
+    border: none;
+    margin: 0;
+}
+
+hr::before {
+    content: "❧";
+    display: block;
+    text-align: center;
+    margin: 0 1.667rem;
 
     position: relative;
-    left: 0.083rem;
+    left: 0.273rem;
 }
 
-b, strong .latin {
-    font-weight: 686;
+::-moz-selection {
+    background: var(--selection-colour);
 }
-
-h1 .latin {
-    font-family: Helvetica, sans-serif;
-    font-weight: 900;
-    position: unset;
-    left: unset;
-}
-
-b, strong {
-    font-weight: 900;
-}
-
-.info {
-    text-indent: 0;
-}
-
-.latin-full-width {
-    text-transform: full-width;
-}
-
-.tcy {
-    text-indent: 0;
-}
-
-.after-article {
-    width: 1.667rem;
-    margin: 0 -0.833rem;
-}
-
-.after-article:last-child {
-    width: 0.833rem;
-}
-
-/* Adobe version of Source Han Serif will have some issues with brackets */
-.firefox .squeeze-in, .firefox .squeeze-out, .firefox .squeeze-other-punc {
-    font-family: 'Noto Serif TC', serif !important;
+  
+::selection {
+    background: var(--selection-colour);
 }
 
 @media screen and (max-height: 480px) {
@@ -238,12 +212,7 @@ b, strong {
     }
 }
 
-::-moz-selection {
-    background: var(--selection-colour);
+/* Adobe version of Source Han Serif will have some issues with brackets on Firefox */
+.firefox .squeeze-in, .firefox .squeeze-out {
+    font-family: 'Noto Serif TC', serif !important;
 }
-  
-::selection {
-    background: var(--selection-colour);
-}
-}
-
