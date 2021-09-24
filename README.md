@@ -1,1 +1,1 @@
-# tategaki.js
+# Tategaki
