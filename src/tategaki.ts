@@ -4,6 +4,10 @@ import './extensions'
 export class Tategaki {
     rootElement: Element
 
+    shouldPcS: boolean
+    imitatePcS: boolean
+    imitateTransfromToFullWidth: boolean
+
     private setElementAttributes(element: Element, segment: StringFormatSegment) {
         switch(segment.formatGuide) {
             case StringFormatGuide.default: { return }
@@ -12,7 +16,9 @@ export class Tategaki {
                 break
             }
             case StringFormatGuide.cjkPunc: {
-                element.innerHTML = this.squeeze(segment.content)
+                if (this.shouldPcS) {
+                    element.innerHTML = this.squeeze(segment.content)
+                }
                 break
             }
         }
@@ -27,7 +33,7 @@ export class Tategaki {
             text = this.correctPuncs(text)
 
             // (CJK_PUNC)|(LATIN)|(AMBIGUOUS)
-            let re = /([\u3001\u3002\u301d\u301f\uff01\uff0c\uff1a\uff1b\uff1f\u3008-\u3011\u3014-\u301B\uff08\uff09]+)|([\p{Script=Latin}0-9\u0020-\u0023\u0025-\u002a\u002c-\u002e\u003a\u003b\u003f\u0040\u005b-\u005d\u005f\u007b\u007d\u00a1\u00a7\u00ab\u00b2\u00b3\u00b6\u00b7\u00b9\u00bb-\u00bf\u2010-\u2013\u2018\u2019\u201c\u201d\u2020\u2021\u2026\u2027\u2030\u2032-\u2037\u2039\u203a\u203c-\u203e\u2047-\u2049\u204e\u2057\u2070\u2074-\u2079\u2080-\u2089\u2150\u2153\u2154\u215b-\u215e\u2160-\u217f\u2474-\u249b\u2e18\u2e2e]+)|([\u002f]+)/gu
+            let re = /([\u3001\u3002\u301d\u301f\uff01\uff0c\uff1a\uff1b\uff1f\u3008-\u3011\u3014-\u301B\uff08\uff09]{2,})|([\p{Script=Latin}0-9\u0020-\u0023\u0025-\u002a\u002c-\u002e\u003a\u003b\u003f\u0040\u005b-\u005d\u005f\u007b\u007d\u00a1\u00a7\u00ab\u00b2\u00b3\u00b6\u00b7\u00b9\u00bb-\u00bf\u2010-\u2013\u2018\u2019\u201c\u201d\u2020\u2021\u2026\u2027\u2030\u2032-\u2037\u2039\u203a\u203c-\u203e\u2047-\u2049\u204e\u2057\u2070\u2074-\u2079\u2080-\u2089\u2150\u2153\u2154\u215b-\u215e\u2160-\u217f\u2474-\u249b\u2e18\u2e2e]+)|([\u002f]+)/gu
 
             let segments = text.segmentise(re)
 
@@ -73,6 +79,8 @@ export class Tategaki {
             const squeezeClass = isOpeningBracket ? 'squeeze-in' : 'squeeze-out'
             let result = `<span class="${squeezeClass}">${punc}</span>`
 
+            if (!this.imitatePcS) { return result }
+
             if (isOpeningBracket) {
                return `<span class="squeeze-in-space"> </span>` + result 
             } else {
@@ -81,11 +89,92 @@ export class Tategaki {
         }).join('')
     }
 
-    parse() {
-        this.format(this.rootElement)
+    private transfromToFullWidth(x: string): string {
+        const base = '0'.charCodeAt(0)
+        const newBase = '\uff10'.charCodeAt(0)
+        const current = x.charCodeAt(0)
+        return String.fromCharCode(current - base + newBase)
     }
 
-    constructor(rootElement: HTMLElement) {
+    private tcy(imitateTransfromToFullWidth: boolean=false) {
+        let documentElement = document.documentElement
+        let fontSizeRaw = window.getComputedStyle(documentElement)['font-size'].match(/(\d+)px/)[1]
+        let fontSize = parseInt(fontSizeRaw)
+
+        let elements = Array.from(this.rootElement.getElementsByClassName(StringFormatGuide.latin))
+        elements.forEach(element => {
+            const text = element.innerHTML.trim()
+
+            if (/^[\w\p{Script=Latin}]/u.test(text) && 
+                element.nodeName != 'I' && 
+                element.nodeName != 'EM' &&
+                element.parentElement.nodeName != 'I' &&
+                element.parentElement.nodeName != 'EM') {
+                if (text.length == 1) {
+                    if (imitateTransfromToFullWidth) {
+                        element.innerHTML = this.transfromToFullWidth(text)
+                    } else {
+                        element.innerHTML = text
+                        element.classList.add('to-fullwidth')
+                    }
+                    element.classList.remove('latin')
+                    element.removeAttribute('lang')
+                } else if (/^([A-Z]{3,10}|\d{4,10})$/.test(text))  {
+                    if (imitateTransfromToFullWidth) {
+                        element.innerHTML = Array.from(text, x => 
+                            this.transfromToFullWidth(x)).join('')
+                    } else {
+                        element.innerHTML = text
+                        element.classList.add('to-fullwidth')
+                    }
+                    element.classList.remove('latin')
+                    element.removeAttribute('lang')
+                } else if (/^[A-Z]{2}$|^\d{2,3}$/.test(text)) {
+                    element.innerHTML = text
+                    element.classList.remove('latin')
+                    element.removeAttribute('lang')
+                    element.classList.add('tcy')
+                } else if (/^\d{1,3}%$/.test(text)) {
+                    const matches = /^(\d{1,3})%$/.exec(text)
+                    let newElement = document.createElement('span')
+                    let digit = matches[1]
+                    if (digit.length === 1) {
+                        digit = this.transfromToFullWidth(digit)
+                    }
+                    newElement.innerHTML = `<span ${digit.length == 1 ? '' : 'class="tcy"'}>${digit}</span>&#8288;％`
+                    element.replaceWith(newElement)
+                } else {
+                    let threshold = fontSize
+                    if (element.innerHTML != text) {
+                        // Need adjusting
+                        threshold *= 1.5
+                    } else {
+                        threshold *= 1.333
+                    }
+
+                    if (element.getBoundingClientRect().height <= threshold) {
+                        element.innerHTML = text
+                        element.classList.add('tcy')
+                    }
+                }
+            }
+        })
+    }
+
+    parse() {
+        this.format(this.rootElement)
+
+        this.rootElement.classList.add(this.imitatePcS ? 'imitate-pcs' : 'opentype-pcs')
+
+        this.tcy(this.imitateTransfromToFullWidth)
+    }
+
+    constructor(rootElement: HTMLElement, 
+                shouldPcS: boolean=true, imitatePcS: boolean=true, 
+                imitateTransfromToFullWidth: boolean=true) {
         this.rootElement = rootElement
+        this.shouldPcS = shouldPcS
+        this.imitatePcS = imitatePcS
+        this.imitateTransfromToFullWidth = imitateTransfromToFullWidth
     }
 }

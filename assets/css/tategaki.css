@@ -1,0 +1,66 @@
+.tategaki {
+    writing-mode: vertical-rl;
+
+    hanging-punctuation: allow-end last;
+
+    text-align: justify;
+}
+
+.latin {
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.tcy {
+    -webkit-text-combine: horizontal;
+    -ms-text-combine-horizontal: all;
+    text-combine-upright: all;
+    position: static !important;
+}
+
+.to-fullwidth {
+    font-feature-settings: "fwid";
+    text-transform: full-width;
+}
+
+/* Imitate PcS (Add space and strink height)  */
+.imitate-pcs .squeeze-out {
+    letter-spacing: -0.5rem;
+}
+
+.imitate-pcs .squeeze-in {
+    margin-top: -0.5rem;
+}
+
+.squeeze-in + .squeeze-in-space {
+    display: none;
+}
+
+.squeeze-other-punc + .squeeze-in-space {
+    display: none;
+}
+
+.squeeze-out-space {
+    display: none;
+}
+
+.squeeze-out-space:last-child {
+    display: inline;
+}
+
+/* PcS: Using OpenType `vhal` */
+.opentype-pcs .squeeze-other-punc + .squeeze-in {
+    font-feature-settings: "vhal";
+}
+
+.opentype-pcs .squeeze-in + .squeeze-in {
+    font-feature-settings: "vhal";
+}
+
+.opentype-pcs .squeeze-out {
+    font-feature-settings: "vhal";
+}
+
+.opentype-pcs .squeeze-out:last-child {
+    font-feature-settings: "vhal" 0;
+}
