@@ -29,6 +29,7 @@
 html {
     font-size: 18px; /* Define rem */
     line-height: 1.667;
+    writing-mode: vertical-rl;
 }
 
 * {
@@ -42,8 +43,6 @@ body {
     font-family: source-han-serif-tc, source-han-serif-sc, source-han-serif-japanese, 'STSong', 'SimSun', serif;
     font-weight: 500;
     font-style: normal;
-    
-    writing-mode: vertical-rl;
 
     background-color: var(--background-colour);
     overflow-y: hidden;
