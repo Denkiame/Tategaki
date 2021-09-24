@@ -98,7 +98,7 @@ export class Tategaki {
 
     private tcy(imitateTransfromToFullWidth: boolean=false) {
         let documentElement = document.documentElement
-        let fontSizeRaw = window.getComputedStyle(documentElement)['font-size'].match(/(\d+)px/)[1]
+        let fontSizeRaw = window.getComputedStyle(documentElement).fontSize.match(/(\d+)px/)[1]
         let fontSize = parseInt(fontSizeRaw)
 
         let elements = Array.from(this.rootElement.getElementsByClassName(StringFormatGuide.latin))

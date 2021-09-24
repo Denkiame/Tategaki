@@ -215,3 +215,7 @@ hr::before {
 .firefox .squeeze-in, .firefox .squeeze-out {
     font-family: 'Noto Serif TC', serif !important;
 }
+
+.chrome .tcy {
+    text-indent: 0;
+}

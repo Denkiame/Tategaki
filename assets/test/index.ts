@@ -9,6 +9,6 @@ let tategaki = new Tategaki(article, true, isFirefox, !isFirefox)
 
 tategaki.parse()
 
-if (isFirefox) {
-    document.body.classList.add('firefox')
+if (browser) {
+    document.body.classList.add(browser.name)
 }
