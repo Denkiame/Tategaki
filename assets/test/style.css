@@ -218,11 +218,9 @@ b, strong {
 }
 
 /* Adobe version of Source Han Serif will have some issues with brackets */
-/* .disable-imitate-psc .squeeze-in, .squeeze-out, .squeeze-other-punc {
-    background-color: red;
+.firefox .squeeze-in, .firefox .squeeze-out, .firefox .squeeze-other-punc {
     font-family: 'Noto Serif TC', serif !important;
 }
- */
 
 @media screen and (max-height: 480px) {
     article {
