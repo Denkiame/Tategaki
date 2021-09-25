@@ -1,0 +1,15 @@
+{
+    "latest": {
+        "original": "http://host.tategaki.de/1.0.0/original.css",
+        "tategaki": "http://host.tategaki.de/1.0.0/tategaki.css"
+    },
+    "legacy": [
+        {
+            "version": "1.0.0",
+            "css": {
+                "original": "http://host.tategaki.de/1.0.0/original.css",
+                "tategaki": "http://host.tategaki.de/1.0.0/tategaki.css"
+            }
+        }
+    ]
+}
