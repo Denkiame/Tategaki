@@ -1,0 +1,234 @@
+:root {
+    --foreground-colour: #000a0cf5;
+    --background-colour: #fdfdfc;
+    --secondary-colour: #787f86;
+    --a-colour: #0e697e;
+    --a-visited-colour: #084452;
+    --selection-colour: #12788f32;
+    --img-onhover-colour: rgba(0, 0, 0, .06);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        --foreground-colour: #fffffee3;
+        --background-colour: #161618;
+        --secondary-colour: #c5c9ce;
+        --a-colour: #91d6e5;
+        --a-visited-colour: #56b8cd;
+        --selection-colour: #91d6e532;
+        --img-onhover-colour: rgba(255, 255, 255, .06); 
+    }
+
+    html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: geometricPrecision !important;
+    }
+}
+
+html {
+    font-size: 18px; /* Define rem */
+    line-height: 1.667;
+    writing-mode: vertical-rl;
+}
+
+* {
+    margin: 0; padding: 0;
+    font-size: 1rem;
+}
+
+/* Typography */
+body {
+    color: var(--foreground-colour);
+    font-family: source-han-serif-tc, source-han-serif-sc, source-han-serif-japanese, 'STSong', 'SimSun', serif;
+    font-weight: 500;
+    font-style: normal;
+
+    background-color: var(--background-colour);
+    overflow-y: hidden;
+}
+
+.latin {
+    font-family: 'Crimson Pro', Garamond, Georgia, serif;
+    font-weight: 429;
+
+    position: relative;
+    left: 0.083rem;
+}
+
+/* Article */
+article {
+    display: block;
+    height: 32rem;
+    margin: 3.334rem;
+}
+
+.after-article {
+    width: 1.667rem;
+    margin: 0 -0.833rem;
+}
+
+.after-article:last-child {
+    width: 0.833rem;
+}
+
+.headline { margin-left: 5rem; /* 3lh */ }
+.info { text-indent: 0; }
+
+/* Headings */
+h1 {
+    font-family: source-han-sans-cjk-tc, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    /* font-feature-settings: "aalt"; */
+}
+h2, h3 { font-weight: 900; }
+h2 { margin: 0 3.334rem 0 1.667rem; /* 2lh 1lh */ }
+h3 { margin-right: 1.667rem; }
+
+/* Styled Text */
+small { font-size: 0.75rem; }
+
+p, blockquote {
+    text-align: justify;
+    text-indent: 1rem;
+}
+
+.indent {
+    margin-top: 1rem;
+}
+
+blockquote {
+    margin-top: -16px;
+    border-top: 2px solid var(--foreground-colour);
+    padding-top: 14px;
+}
+
+h1.latin, h1 .latin {
+    font-family: Helvetica, sans-serif;
+    font-weight: 900;
+    position: unset;
+    left: unset;
+}
+
+a {
+    color: var(--a-colour);
+    text-decoration: none;
+    
+    transition-duration: 0.2s;
+}
+
+a:hover {
+    color: var(--a-visited-colour);
+}
+
+/* Image */
+img {
+    max-height: 30rem;
+}
+
+figure img {
+    max-height: unset;
+    height: 32rem;
+}
+
+figure {
+    margin: 0 1.667rem 0;
+}
+
+figure > img {
+    transition-duration: 0.2s;
+}
+
+figure > img:hover {
+    background-color: var(--img-onhover-colour);
+}
+
+figcaption {
+    color: var(--secondary-colour);
+    /* text-align: center; */
+    margin: 1rem 0;
+}
+
+b, strong { font-weight: 900; }
+b.latin, b .latin, strong.latin, strong .latin { font-weight: 686; }
+
+/* CJK Emphasis  */
+em  {
+    font-style: normal;
+    text-emphasis: '\25AA';
+    -webkit-text-emphasis: '\25AA';
+    /* Would it be nice if offset can be customised */
+}
+
+em.latin, em .latin {
+    font-style: italic;
+    text-emphasis: none;
+    -webkit-text-emphasis: none;
+}
+
+/* Lists */
+ul { list-style-type: '\25AA\0020'; }
+
+ol {
+    list-style-type: trad-chinese-informal;
+    list-style-position: inside;
+}
+
+ol li {
+    margin: 0;
+    text-indent: 1rem;
+    text-align: justify;
+}
+
+hr {
+    border: none;
+    margin: 0;
+}
+
+hr::before {
+    content: "❧";
+    display: block;
+    text-align: center;
+    margin: 0 1.667rem;
+
+    position: relative;
+    left: 0.273rem;
+}
+
+::-moz-selection {
+    background: var(--selection-colour);
+}
+  
+::selection {
+    background: var(--selection-colour);
+}
+
+@media screen and (max-height: 480px) {
+    article {
+        margin: calc(3.334rem - (480px - 100vh) / 2);
+    }
+}
+
+@media screen and (max-height: 432px) {
+    :root {
+        font-size: 15px;
+    }
+
+    article {
+        margin: 30px env(safe-area-inset-right, 30px);
+    }
+}
+
+/* Adobe version of Source Han Serif will have some issues with brackets on Firefox and Chrome */
+.firefox .squeeze-in, .firefox .squeeze-out {
+    font-family: 'Noto Serif TC', serif !important;
+}
+
+.chrome .squeeze-in, .chrome .squeeze-out {
+    font-family: 'Noto Serif TC', serif !important;
+}
+
+.chrome .tcy {
+    text-indent: 0;
+}
