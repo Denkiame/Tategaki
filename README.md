@@ -6,14 +6,21 @@
 
 1. Import `Tategaki`:
 
-```JavaScript
+```TypeScript
 import { Tategaki } from 'tategaki'
 ```
 
 2. Link an `HTMLElement` and parse. Suppose the root `article` is an `HTMLElement`:
 
-```JavaScript
-let tategaki = new Tategaki(article)
+```TypeScript
+/*
+ * `Tategaki` arguments:
+ * - rootElement: HTMLElement
+ * - shouldPcS: boolean=true
+ * - imitatePcS: boolean=true (Using customised PcS instead of OpenType `vhal`)
+ * - imitateTransfromToFullWidth: boolean=true (Using customised full-width transfomation instead of OpenType `fwid`)
+ */
+let tategaki = new Tategaki(article, true, false, false)
 tategaki.parse()
 ```
 
