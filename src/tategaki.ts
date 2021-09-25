@@ -113,8 +113,9 @@ export class Tategaki {
         let elements = Array.from(this.rootElement.getElementsByClassName(StringFormatGuide.latin))
         elements.forEach(element => {
             const text = element.innerHTML.trim()
-            if (!element.previousElementSibling || !element.nextElementSibling) { return }
-            if (element.previousElementSibling.classList.contains(StringFormatGuide.ambiguous) || 
+            if (element.previousElementSibling && 
+                element.previousElementSibling.classList.contains(StringFormatGuide.ambiguous) || 
+                element.nextElementSibling &&
                 element.nextElementSibling.classList.contains(StringFormatGuide.ambiguous)) { return }
 
             if (/^[\w\p{Script=Latin}]/u.test(text) && 
