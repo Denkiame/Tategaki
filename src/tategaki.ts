@@ -1,12 +1,14 @@
 import { StringFormatSegment, StringFormatGuide } from './formatSegment'
 import './extensions'
 
+
 export class Tategaki {
     rootElement: Element
 
     shouldPcS: boolean
     imitatePcS: boolean
     imitateTransfromToFullWidth: boolean
+    
 
     private setElementAttributes(element: Element, segment: StringFormatSegment) {
         switch(segment.formatGuide) {
@@ -72,6 +74,7 @@ export class Tategaki {
         })
     }
 
+    // Raw replacements for specific puncs & symbols
     private correctPuncs(text: string): string {
         return text
             .replace(/——|──/g, '――')
@@ -98,6 +101,10 @@ export class Tategaki {
         }).join('')
     }
 
+    // Since not all browser support full-width transformation,
+    // it'll do some unicode calc to do that.
+    // Delta between codes of characters in full-width is as same 
+    // as ASCII, so choose zero as base for calculation
     private transfromToFullWidth(x: string): string {
         const base = '0'.charCodeAt(0)
         const newBase = '\uff10'.charCodeAt(0)
@@ -105,6 +112,7 @@ export class Tategaki {
         return String.fromCharCode(current - base + newBase)
     }
 
+    // Yokogaki in Tategaki (Tategaki-Chyu-Yokogaki)
     private tcy(imitateTransfromToFullWidth: boolean=false) {
         let documentElement = document.documentElement
         let fontSizeRaw = window.getComputedStyle(documentElement).fontSize.match(/(\d+)px/)[1]
@@ -123,6 +131,8 @@ export class Tategaki {
                 element.nodeName != 'EM' &&
                 element.parentElement.nodeName != 'I' &&
                 element.parentElement.nodeName != 'EM') {
+                // Words with only one lettre should turn to full-width
+                // and lose `latin` class
                 if (text.length == 1) {
                     if (imitateTransfromToFullWidth) {
                         element.innerHTML = this.transfromToFullWidth(text)
@@ -132,6 +142,8 @@ export class Tategaki {
                     }
                     element.classList.remove('latin')
                     element.removeAttribute('lang')
+                // Abbreviations and numbers no more than 4 digits should
+                // turn to full-width
                 } else if (/^([A-Z]{3,10}|\d{4,10})$/.test(text))  {
                     if (imitateTransfromToFullWidth) {
                         element.innerHTML = Array.from(text, x => 
@@ -147,6 +159,7 @@ export class Tategaki {
                     element.classList.remove('latin')
                     element.removeAttribute('lang')
                     element.classList.add('tcy')
+                // Percentage
                 } else if (/^\d{1,3}%$/.test(text)) {
                     const matches = /^(\d{1,3})%$/.exec(text)
                     let newElement = document.createElement('span')
@@ -156,6 +169,7 @@ export class Tategaki {
                     }
                     newElement.innerHTML = `<span ${digit.length == 1 ? '' : 'class="tcy"'}>${digit}</span>&#8288;％`
                     element.replaceWith(newElement)
+                // Measure height of the element to decide if TCY
                 } else {
                     let threshold = fontSize
                     if (element.innerHTML != text) {
