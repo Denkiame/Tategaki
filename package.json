@@ -1,7 +1,7 @@
 {
   "name": "tategaki",
   "version": "1.0.0",
-  "description": "",
+  "description": "Transform HTML elements into vertical writing (Tategaki)",
   "main": "./src/tategaki.ts",
   "scripts": {
     "test": "webpack serve"
@@ -10,9 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/denkiame/tategaki.js.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [ "typography", "cjk" ],
+  "author": "Toto Minai <the@unpopular.me> (https://chunghwa.asia)",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/denkiame/tategaki.js/issues"
   },
