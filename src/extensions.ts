@@ -21,13 +21,15 @@ String.prototype.segmentise = function (re) {
 
         let formatGuide: StringFormatGuide
         if (match[1]) {
-            formatGuide = StringFormatGuide.cjkPunc
-        } else if (match[2]) {
-            formatGuide = StringFormatGuide.fullwidthAlphabet
-        } else if (match[3]) {
-            formatGuide = StringFormatGuide.latin
-        } else if (match[4]) {
             formatGuide = StringFormatGuide.ambiguous
+        } else if (match[2]) {
+            formatGuide = StringFormatGuide.cjkPunc
+        } else if (match[3]) {
+            formatGuide = StringFormatGuide.fullwidthAlphabet
+        } else if (match[4]) {
+            formatGuide = StringFormatGuide.latin
+        } else if (match[5]) {
+            formatGuide = StringFormatGuide.kana
         }
 
         segments.push({

@@ -10,7 +10,10 @@ export class Tategaki {
 
     private setElementAttributes(element: Element, segment: StringFormatSegment) {
         switch(segment.formatGuide) {
-            case StringFormatGuide.default: { return }
+            case StringFormatGuide.default: {
+                element.innerHTML =  this.postProcess(segment.content)
+                return
+            }
             case StringFormatGuide.latin: {
                 element.setAttribute('lang', 'en')
                 break
@@ -26,19 +29,24 @@ export class Tategaki {
         element.classList.add(segment.formatGuide)
     }
 
+    private postProcess(text: string): string {
+        return text
+            .replace(/\n[ \n]*/g, `<br /><span class="indent"></span>`)
+    }
+
     private format(node: Node, passUntilPara: boolean=true) {
         if (node.nodeType === Node.TEXT_NODE) {
             let text = node.nodeValue!
             if (!text.trim()) { return }
             text = this.correctPuncs(text)
 
-            // (CJK_PUNC)|(FULL_WIDTH_ALPHABET)|(LATIN)|(AMBIGUOUS)
-            let re = /([\u3001\u3002\u301d\u301f\uff01\uff0c\uff1a\uff1b\uff1f\u3008-\u3011\u3014-\u301B\uff08\uff09]{2,})|([\uff21-\uff3a\uff41-\uff5a]+)|([\p{Script=Latin}0-9\u0020-\u0023\u0025-\u002a\u002c-\u002e\u003a\u003b\u003f\u0040\u005b-\u005d\u005f\u007b\u007d\u00a1\u00a7\u00ab\u00b2\u00b3\u00b6\u00b7\u00b9\u00bb-\u00bf\u2010-\u2013\u2018\u2019\u201c\u201d\u2020\u2021\u2026\u2027\u2030\u2032-\u2037\u2039\u203a\u203c-\u203e\u2047-\u2049\u204e\u2057\u2070\u2074-\u2079\u2080-\u2089\u2150\u2153\u2154\u215b-\u215e\u2160-\u217f\u2474-\u249b\u2e18\u2e2e]+)|([\u002f]+)/gu
+            // (AMBIGUOUS)|(CJK_PUNC)|(FULL_WIDTH_ALPHABET)|(LATIN)|(KANA)
+            let re = /([\u002f\u2013]+|――)|([\u3001\u3002\u301d\u301f\uff01\uff0c\uff1a\uff1b\uff1f\u3008-\u3011\u3014-\u301B\uff08\uff09]+)|([\uff21-\uff3a\uff41-\uff5a]+)|([\p{Script=Latin}0-9\u0020-\u0023\u0025-\u002b\u002c-\u002e\u003a\u003b\u003f\u0040\u005b-\u005d\u005f\u007b\u007d\u00a1\u00a7\u00ab\u00b2\u00b3\u00b6\u00b7\u00b9\u00bb-\u00bf\u2010-\u2012\u2018\u2019\u201c\u201d\u2020\u2021\u2026\u2027\u2030\u2032-\u2037\u2039\u203a\u203c-\u203e\u2047-\u2049\u204e\u2057\u2070\u2074-\u2079\u2080-\u2089\u2150\u2153\u2154\u215b-\u215e\u2160-\u217f\u2474-\u249b\u2e18\u2e2e]+)|([\u3041-\u309f\u30a0-\u30fa\u30fc\u30ff]+)/gu
 
             let segments = text.segmentise(re)
 
             let parentElement = node.parentElement
-            if (segments.length === 1) {
+            if (!parentElement.childElementCount && segments.length === 1) {
                 this.setElementAttributes(parentElement, segments[0])
             } else {
                 segments.forEach(segment => {
@@ -55,6 +63,7 @@ export class Tategaki {
             return
         }
 
+        if (node.nodeName === 'BR') { return }
         const isPara = node.nodeName === 'P' || node.nodeName === 'BLOCKQUOTE'
 
         let childNodes = Array.from(node.childNodes)
@@ -104,6 +113,9 @@ export class Tategaki {
         let elements = Array.from(this.rootElement.getElementsByClassName(StringFormatGuide.latin))
         elements.forEach(element => {
             const text = element.innerHTML.trim()
+            if (!element.previousElementSibling || !element.nextElementSibling) { return }
+            if (element.previousElementSibling.classList.contains(StringFormatGuide.ambiguous) || 
+                element.nextElementSibling.classList.contains(StringFormatGuide.ambiguous)) { return }
 
             if (/^[\w\p{Script=Latin}]/u.test(text) && 
                 element.nodeName != 'I' && 
@@ -163,22 +175,40 @@ export class Tategaki {
 
     private correctAmbiguous() {
         Array.from(document.getElementsByClassName(StringFormatGuide.ambiguous), element => {
-            if (element.previousElementSibling && 
-                element.previousElementSibling.classList.contains(StringFormatGuide.latin) &&
-                element.nextElementSibling &&
-                element.nextElementSibling.classList.contains(StringFormatGuide.latin)) { return }
+            if (!element.previousElementSibling || !element.nextElementSibling) {
+                element.classList.add('latin')
+                return
+            }
+
+            if (element.previousElementSibling.classList.contains(StringFormatGuide.latin) &&
+                element.nextElementSibling.classList.contains(StringFormatGuide.latin)) {
+                element.classList.add('latin')
+                return
+            }
             
-            if (element.innerHTML === '/') {
-                element.innerHTML = '／'
+            switch(element.innerHTML) {
+                case '/': {
+                    element.innerHTML = '／'
+                    break
+                }
+                case '–': {
+                    element.innerHTML = '―'
+                    break
+                }
+                case '――': {
+                    element.classList.add('aalt-on')
+                    break
+                }
             }
         })
 
     }
 
     parse() {
-        this.format(this.rootElement)
-
+        this.rootElement.classList.add('tategaki')
         this.rootElement.classList.add(this.imitatePcS ? 'imitate-pcs' : 'opentype-pcs')
+
+        this.format(this.rootElement)
 
         this.tcy(this.imitateTransfromToFullWidth)
 

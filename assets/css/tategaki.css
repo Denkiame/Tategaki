@@ -16,6 +16,10 @@
     hyphenate-limit-chars: 6 3 2;
 }
 
+.kana {
+    font-feature-settings: "vpal";
+}
+
 .tcy {
     -webkit-text-combine: horizontal;
     -ms-text-combine-horizontal: all;
@@ -26,6 +30,11 @@
 .to-fullwidth {
     font-feature-settings: "fwid";
     text-transform: full-width;
+}
+
+/* Correct CJK dashes */
+.aalt-on {
+    font-feature-settings: "aalt";
 }
 
 /* Imitate PcS (Add space and strink height)  */

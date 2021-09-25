@@ -3,6 +3,7 @@ export enum StringFormatGuide {
     cjkPunc = 'cjk-punc',
     fullwidthAlphabet = 'fullwidth-alphabet',
     latin = 'latin',
+    kana = 'kana',
     ambiguous = 'ambiguous',
 }
 
