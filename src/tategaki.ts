@@ -8,6 +8,7 @@ export class Tategaki {
     shouldPcS: boolean
     imitatePcS: boolean
     imitateTransfromToFullWidth: boolean
+    shouldRemoveStyle: boolean
     
 
     private setElementAttributes(element: Element, segment: StringFormatSegment) {
@@ -71,6 +72,16 @@ export class Tategaki {
         let childNodes = Array.from(node.childNodes)
         childNodes.forEach(childNode => {
             this.format(childNode, isPara ? false : passUntilPara)
+        })
+    }
+
+    private removeStyle(element: Element=this.rootElement) {
+        element.removeAttribute('style')
+        element.removeAttribute('width')
+        element.removeAttribute('height')
+
+        Array.from(element.children, child => {
+            this.removeStyle(child)
         })
     }
 
@@ -195,12 +206,18 @@ export class Tategaki {
                 return
             }
 
+
+            if (element.innerHTML === '――') {
+                element.classList.add('aalt-on')
+                return
+            }
+
             if (element.previousElementSibling.classList.contains(StringFormatGuide.latin) &&
                 element.nextElementSibling.classList.contains(StringFormatGuide.latin)) {
                 element.classList.add('latin')
                 return
             }
-            
+
             switch(element.innerHTML) {
                 case '/': {
                     element.innerHTML = '／'
@@ -210,16 +227,13 @@ export class Tategaki {
                     element.innerHTML = '―'
                     break
                 }
-                case '――': {
-                    element.classList.add('aalt-on')
-                    break
-                }
             }
         })
-
     }
 
     parse() {
+        if (this.shouldRemoveStyle) { this.removeStyle() }
+
         this.rootElement.classList.add('tategaki')
         this.rootElement.classList.add(this.imitatePcS ? 'imitate-pcs' : 'opentype-pcs')
 
@@ -232,10 +246,12 @@ export class Tategaki {
 
     constructor(rootElement: HTMLElement, 
                 shouldPcS: boolean=true, imitatePcS: boolean=true, 
-                imitateTransfromToFullWidth: boolean=true) {
+                imitateTransfromToFullWidth: boolean=true,
+                shouldRemoveStyle: boolean=false) {
         this.rootElement = rootElement
         this.shouldPcS = shouldPcS
         this.imitatePcS = imitatePcS
         this.imitateTransfromToFullWidth = imitateTransfromToFullWidth
+        this.shouldRemoveStyle = shouldRemoveStyle
     }
 }
