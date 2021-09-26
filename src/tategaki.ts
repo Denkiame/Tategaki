@@ -164,10 +164,11 @@ export class Tategaki {
 
             if (/^[\w\p{Script=Latin}]/u.test(text) && 
                 element.nodeName != 'I' && 
-                element.nodeName != 'EM' || 
+                element.nodeName != 'EM' &&
+                (!element.parentElement ||
                 element.parentElement &&
                 element.parentElement.nodeName != 'I' &&
-                element.parentElement.nodeName != 'EM') {
+                element.parentElement.nodeName != 'EM')) {
                 // Words with only one lettre should turn to full-width
                 // and lose `latin` class
                 if (text.length == 1) {
