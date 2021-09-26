@@ -8,9 +8,9 @@ if (browser) {
     document.body.classList.add(browser.name)
 }
 
-let articles = Array.from(document.querySelectorAll('article'))
-articles.forEach(article => {
-    let tategaki = new Tategaki(article, true, isFirefox || isChrome, true)
+let kaku = Array.from(document.getElementsByClassName('tategaki'))
+kaku.forEach(k => {
+    let tategaki = new Tategaki(k, true, isFirefox || isChrome, true)
 
     tategaki.parse()
 })

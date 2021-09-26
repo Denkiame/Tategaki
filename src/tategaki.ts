@@ -244,7 +244,7 @@ export class Tategaki {
         this.correctAmbiguous()
     }
 
-    constructor(rootElement: HTMLElement, 
+    constructor(rootElement: Element, 
                 shouldPcS: boolean=true, imitatePcS: boolean=true, 
                 imitateTransfromToFullWidth: boolean=true,
                 shouldRemoveStyle: boolean=false) {

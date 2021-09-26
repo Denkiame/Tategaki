@@ -4,7 +4,8 @@
   "description": "Transform HTML elements into vertical writing (Tategaki)",
   "main": "./src/tategaki.ts",
   "scripts": {
-    "test": "webpack serve"
+    "test": "webpack serve",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
