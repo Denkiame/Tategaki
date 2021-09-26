@@ -1,15 +1,40 @@
 import { StringFormatSegment, StringFormatGuide } from './formatSegment'
 import './extensions'
 
+interface Config {
+    shouldPcS ?: boolean
+    imitatePcS ?: boolean
+    imitateTransfromToFullWidth ?: boolean
+    shouldRemoveStyle ?: boolean
+}
 
 export class Tategaki {
     rootElement: Element
+    config: Config
 
-    shouldPcS: boolean
-    imitatePcS: boolean
-    imitateTransfromToFullWidth: boolean
-    shouldRemoveStyle: boolean
-    
+    constructor(rootElement: Element, config?: Config) {
+        this.rootElement = rootElement
+
+        const defaultConfig: Config = {
+            shouldPcS: true,
+            imitatePcS: true,
+            imitateTransfromToFullWidth: true,
+            shouldRemoveStyle: false
+        }
+
+        this.config = Object.assign({}, defaultConfig, config)
+    }
+
+    parse() {
+        if (this.config.shouldRemoveStyle) { this.removeStyle() }
+
+        this.rootElement.classList.add('tategaki')
+        this.rootElement.classList.add(this.config.imitatePcS ? 'imitate-pcs' : 'opentype-pcs')
+
+        this.format(this.rootElement)
+        this.tcy()
+        this.correctAmbiguous()
+    }
 
     private setElementAttributes(element: Element, segment: StringFormatSegment) {
         switch(segment.formatGuide) {
@@ -22,7 +47,7 @@ export class Tategaki {
                 break
             }
             case StringFormatGuide.cjkPunc: {
-                if (this.shouldPcS) {
+                if (this.config.shouldPcS) {
                     element.innerHTML = this.squeeze(segment.content)
                 }
                 break
@@ -102,7 +127,7 @@ export class Tategaki {
             const squeezeClass = isOpeningBracket ? 'squeeze-in' : 'squeeze-out'
             let result = `<span class="${squeezeClass}">${punc}</span>`
 
-            if (!this.imitatePcS) { return result }
+            if (!this.config.imitatePcS) { return result }
 
             if (isOpeningBracket) {
                return `<span class="squeeze-in-space"></span>` + result 
@@ -124,7 +149,7 @@ export class Tategaki {
     }
 
     // Yokogaki in Tategaki (Tategaki-Chyu-Yokogaki)
-    private tcy(imitateTransfromToFullWidth: boolean=false) {
+    private tcy() {
         let documentElement = document.documentElement
         let fontSizeRaw = window.getComputedStyle(documentElement).fontSize.match(/(\d+)px/)[1]
         let fontSize = parseInt(fontSizeRaw)
@@ -145,7 +170,7 @@ export class Tategaki {
                 // Words with only one lettre should turn to full-width
                 // and lose `latin` class
                 if (text.length == 1) {
-                    if (imitateTransfromToFullWidth) {
+                    if (this.config.imitateTransfromToFullWidth) {
                         element.innerHTML = this.transfromToFullWidth(text)
                     } else {
                         element.innerHTML = text
@@ -156,7 +181,7 @@ export class Tategaki {
                 // Abbreviations and numbers no more than 4 digits should
                 // turn to full-width
                 } else if (/^([A-Z]{3,10}|\d{4,10})$/.test(text))  {
-                    if (imitateTransfromToFullWidth) {
+                    if (this.config.imitateTransfromToFullWidth) {
                         element.innerHTML = Array.from(text, x => 
                             this.transfromToFullWidth(x)).join('')
                     } else {
@@ -228,29 +253,5 @@ export class Tategaki {
                 }
             }
         })
-    }
-
-    parse() {
-        if (this.shouldRemoveStyle) { this.removeStyle() }
-
-        this.rootElement.classList.add('tategaki')
-        this.rootElement.classList.add(this.imitatePcS ? 'imitate-pcs' : 'opentype-pcs')
-
-        this.format(this.rootElement)
-
-        this.tcy(this.imitateTransfromToFullWidth)
-
-        this.correctAmbiguous()
-    }
-
-    constructor(rootElement: Element, 
-                shouldPcS: boolean=true, imitatePcS: boolean=true, 
-                imitateTransfromToFullWidth: boolean=true,
-                shouldRemoveStyle: boolean=false) {
-        this.rootElement = rootElement
-        this.shouldPcS = shouldPcS
-        this.imitatePcS = imitatePcS
-        this.imitateTransfromToFullWidth = imitateTransfromToFullWidth
-        this.shouldRemoveStyle = shouldRemoveStyle
     }
 }

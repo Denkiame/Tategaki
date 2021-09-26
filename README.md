@@ -18,11 +18,16 @@ import { Tategaki } from 'tategaki'
 /*
  * `Tategaki` arguments:
  * - rootElement: Element
- * - shouldPcS: boolean=true
- * - imitatePcS: boolean=true (Using customised PcS instead of OpenType `vhal`)
- * - imitateTransfromToFullWidth: boolean=true (Using customised full-width transfomation instead of OpenType `fwid`)
+ * - config: Object
+ *   - shouldPcS: boolean=true
+ *   - imitatePcS: boolean=true (Using customised PcS instead of OpenType `vhal`)
+ *   - imitateTransfromToFullWidth: boolean=true (Using customised full-width transfomation instead of OpenType `fwid`)
  */
-let tategaki = new Tategaki(article, true, false, false)
+let tategaki = new Tategaki(article, {
+    shouldPcS: true,
+    imitatePcS: false,
+    imitateTransfromToFullWidth: false
+})
 tategaki.parse()
 ```
 

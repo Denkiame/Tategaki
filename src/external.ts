@@ -8,7 +8,7 @@ if (browser) {
 
 let kaku = Array.from(document.getElementsByClassName('tategaki'))
 kaku.forEach(k => {
-    let tategaki = new Tategaki(k, true, true, true)
+    let tategaki = new Tategaki(k)
 
     tategaki.parse()
 })
