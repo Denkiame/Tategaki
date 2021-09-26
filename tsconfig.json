@@ -3,8 +3,8 @@
         "target": "ESNext",
         "moduleResolution": "Node",
         "noImplicitAny": true,
-        "outDir": "./dist",
-        "rootDirs": [ "./src", "./test" ],
+        "removeComments": true,
+        "rootDir": "./src",
         "sourceMap": true
     }
 }

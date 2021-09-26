@@ -1,4 +1,4 @@
-import { Tategaki } from "../../src/tategaki"
+import { Tategaki } from './tategaki'
 import { detect } from 'detect-browser'
 
 const browser = detect()
@@ -8,8 +8,9 @@ if (browser) {
     document.body.classList.add(browser.name)
 }
 
-let article = document.getElementsByTagName('article')[0]
-let tategaki = new Tategaki(article, true, isFirefox || isChrome, !isFirefox)
+let articles = Array.from(document.querySelectorAll('article'))
+articles.forEach(article => {
+    let tategaki = new Tategaki(article, true, isFirefox || isChrome, true)
 
-tategaki.parse()
-
+    tategaki.parse()
+})

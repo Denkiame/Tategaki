@@ -1,12 +1,12 @@
 const path = require('path')
 
 module.exports = {
-    mode: "development",
+    mode: "development", // production, development
     devtool: "inline-source-map",
-    entry: "./assets/test/index.ts",
+    entry: "./src/external.ts",
     output: {
         filename: "bundle.js",
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'assets/scripts')
     },
     resolve: { extensions: [".ts", ".js"] },
     module: {
