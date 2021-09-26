@@ -73,7 +73,7 @@ export class Tategaki {
 
             let segments = text.segmentise(re)
 
-            let parentElement = node.parentElement
+            let parentElement = node.parentElement!
             if (!parentElement.childElementCount && segments.length === 1) {
                 this.setElementAttributes(parentElement, segments[0])
             } else {
@@ -151,8 +151,8 @@ export class Tategaki {
     // Yokogaki in Tategaki (Tategaki-Chyu-Yokogaki)
     private tcy() {
         let documentElement = document.documentElement
-        let fontSizeRaw = window.getComputedStyle(documentElement).fontSize.match(/(\d+)px/)[1]
-        let fontSize = parseInt(fontSizeRaw)
+        let fontSizeMatch = window.getComputedStyle(documentElement).fontSize.match(/(\d+)px/)
+        let fontSize = fontSizeMatch ? parseInt(fontSizeMatch[1]) : 0
 
         let elements = Array.from(this.rootElement.getElementsByClassName(StringFormatGuide.latin))
         elements.forEach(element => {
@@ -164,7 +164,8 @@ export class Tategaki {
 
             if (/^[\w\p{Script=Latin}]/u.test(text) && 
                 element.nodeName != 'I' && 
-                element.nodeName != 'EM' &&
+                element.nodeName != 'EM' || 
+                element.parentElement &&
                 element.parentElement.nodeName != 'I' &&
                 element.parentElement.nodeName != 'EM') {
                 // Words with only one lettre should turn to full-width
@@ -197,7 +198,7 @@ export class Tategaki {
                     element.classList.add('tcy')
                 // Percentage
                 } else if (/^\d{1,3}%$/.test(text)) {
-                    const matches = /^(\d{1,3})%$/.exec(text)
+                    const matches = /^(\d{1,3})%$/.exec(text)!
                     let newElement = document.createElement('span')
                     let digit = matches[1]
                     if (digit.length === 1) {

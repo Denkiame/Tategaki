@@ -19,7 +19,7 @@ String.prototype.segmentise = function (re) {
             })
         }
 
-        let formatGuide: StringFormatGuide
+        let formatGuide: StringFormatGuide | undefined
         if (match[1]) {
             formatGuide = StringFormatGuide.ambiguous
         } else if (match[2]) {
@@ -30,11 +30,13 @@ String.prototype.segmentise = function (re) {
             formatGuide = StringFormatGuide.latin
         } else if (match[5]) {
             formatGuide = StringFormatGuide.kana
+        } else {
+            formatGuide = StringFormatGuide.default
         }
 
         segments.push({
             content: match[0],
-            formatGuide: formatGuide
+            formatGuide: formatGuide!
         })
         index = match.index + match[0].length
     }
