@@ -5,8 +5,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: "src/tategaki.ts",
-      name: "tategaki",
-      formats: ["iife"],
+      formats: ["cjs"],
       fileName: (format) => `index.js`
     },
     rollupOptions: {
