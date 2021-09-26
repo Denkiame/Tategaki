@@ -12,12 +12,12 @@
 import { Tategaki } from 'tategaki'
 ```
 
-2. Link an `HTMLElement` and parse. Suppose the root `article` is an `HTMLElement`:
+2. Link an `HTMLElement` and parse. Suppose the root `article` is an `Element`:
 
 ```TypeScript
 /*
  * `Tategaki` arguments:
- * - rootElement: HTMLElement
+ * - rootElement: Element
  * - shouldPcS: boolean=true
  * - imitatePcS: boolean=true (Using customised PcS instead of OpenType `vhal`)
  * - imitateTransfromToFullWidth: boolean=true (Using customised full-width transfomation instead of OpenType `fwid`)
