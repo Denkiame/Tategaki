@@ -6,6 +6,10 @@
         "noImplicitAny": true,
         "removeComments": true,
         "rootDir": "./src",
-        "sourceMap": true
-    }
+        "sourceMap": true,
+        "declaration": true,
+        "outDir": "dist",
+        "lib": ["ESNext", "DOM"]
+    },
+    "include": ["./src"]
 }
