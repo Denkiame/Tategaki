@@ -4,6 +4,8 @@
 
 ## Usage
 
+### TypeScript module
+
 1. Import `Tategaki`:
 
 ```TypeScript
@@ -29,11 +31,26 @@ tategaki.parse()
 - Punctuation squeezing (PcS) will be **automatically applied**. You can turn it off when initialising (`new Tategaki(article, false)`).
 - You can import `tategaki.css` (listed below) for styling.
 
+### Embedded in HTML
+
+- In `<head>`:
+
+```HTML
+<link rel="stylesheet" href="https://host.tategaki.de/1.0.0/tategaki.css" />
+```
+- At the bottom of `<body>`:
+
+```HTML
+<script src="https://host.tategaki.de/1.0.0/tategaki.min.js"></script>
+```
+
+Versions can be found at <https://host.tategaki.de/release.json>.
+
 ## Recommended Style
 
 ### Text
 
-```css
+```cSS
 .tategaki {
     writing-mode: vertical-rl;
 
@@ -59,7 +76,7 @@ tategaki.parse()
 
 ### Tategaki-Chyu-Yokogaki
 
-```css
+```CSS
 .tcy {
     -webkit-text-combine: horizontal;
     -ms-text-combine-horizontal: all;
@@ -75,7 +92,7 @@ tategaki.parse()
 
 ### Punctuation Adjustment
 
-```css
+```CSS
 /* Correct CJK dashes */
 .aalt-on {
     font-feature-settings: "aalt";
