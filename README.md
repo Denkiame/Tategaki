@@ -36,7 +36,7 @@ tategaki.parse()
 - In `<head>`:
 
 ```HTML
-<link rel="stylesheet" href="https://host.tategaki.de/1.0.0/tategaki.css" />
+<link rel="stylesheet" href="https://unpkg.com/tategaki@1.0.3/assets/css/tategaki.css" />
 ```
 - At the bottom of `<body>`:
 
