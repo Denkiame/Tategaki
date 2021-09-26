@@ -1,15 +1,15 @@
 {
     "latest": {
-        "original": "http://host.tategaki.de/1.0.0/original.css",
-        "tategaki": "http://host.tategaki.de/1.0.0/tategaki.css"
+        "original_style": "http://host.tategaki.de/1.0.0/original.css",
+        "style": "http://host.tategaki.de/1.0.0/tategaki.css",
+        "script": "http://host.tategaki.de/1.0.0/tategaki.min.js"
     },
     "legacy": [
         {
             "version": "1.0.0",
-            "css": {
-                "original": "http://host.tategaki.de/1.0.0/original.css",
-                "tategaki": "http://host.tategaki.de/1.0.0/tategaki.css"
-            }
+            "original_style": "http://host.tategaki.de/1.0.0/original.css",
+            "style": "http://host.tategaki.de/1.0.0/tategaki.css",
+            "script": "http://host.tategaki.de/1.0.0/tategaki.min.js"
         }
     ]
 }
