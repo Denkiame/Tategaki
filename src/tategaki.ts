@@ -105,9 +105,9 @@ export class Tategaki {
             if (!this.imitatePcS) { return result }
 
             if (isOpeningBracket) {
-               return `<span class="squeeze-in-space"> </span>` + result 
+               return `<span class="squeeze-in-space"></span>` + result 
             } else {
-               return result + `<span class="squeeze-out-space"> </span>`
+               return result + `<span class="squeeze-out-space"></span>`
             }
         }).join('')
     }

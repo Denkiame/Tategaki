@@ -220,6 +220,12 @@ hr::before {
     }
 }
 
+/* Fix space height  */
+.squeeze-out-space::before, .squeeze-in-space::before {
+    content: "\0020";
+    font: 0.833em Courier;  /* Alternative font. Its U+0020 must be wider than CJK font. */
+}
+
 /* Adobe version of Source Han Serif will have some issues with brackets on Firefox and Chrome */
 .firefox .squeeze-in, .firefox .squeeze-out {
     font-family: 'Noto Serif TC', serif !important;
