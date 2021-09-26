@@ -201,14 +201,13 @@ export class Tategaki {
 
     private correctAmbiguous() {
         Array.from(document.getElementsByClassName(StringFormatGuide.ambiguous), element => {
-            if (!element.previousElementSibling || !element.nextElementSibling) {
-                element.classList.add('latin')
+            if (element.innerHTML === '――') {
+                element.classList.add('aalt-on')
                 return
             }
 
-
-            if (element.innerHTML === '――') {
-                element.classList.add('aalt-on')
+            if (!element.previousElementSibling || !element.nextElementSibling) {
+                element.classList.add('latin')
                 return
             }
 
