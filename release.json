@@ -1,8 +1,8 @@
 {
     "latest": {
-        "original_style": "http://host.tategaki.de/1.0.3/original.css",
-        "style": "https://unpkg.com/tategaki/assets/css/tategaki.css",
-        "script": "http://unpkg.com/tategaki/assets/scripts/bundle.js"
+        "original_style": "https://unpkg.com/tategaki@1.0.6/assets/style.css",
+        "style": "https://unpkg.com/tategaki@1.0.6/assets/tategaki.css",
+        "script": "https://unpkg.com/tategaki@1.0.6/dist/tategaki.min.js"
     },
     "legacy": {
         "1.0.0": {
@@ -14,6 +14,11 @@
             "original_style": "http://host.tategaki.de/1.0.3/original.css",
             "style": "https://unpkg.com/tategaki@1.0.3/assets/css/tategaki.css",
             "script": "http://unpkg.com/tategaki@1.0.3/assets/scripts/bundle.js"
+        },
+        "1.0.6": {
+            "original_style": "https://unpkg.com/tategaki@1.0.6/assets/style.css",
+            "style": "https://unpkg.com/tategaki@1.0.6/assets/tategaki.css",
+            "script": "https://unpkg.com/tategaki@1.0.6/dist/tategaki.min.js"
         }
     }
 }
