@@ -35,7 +35,7 @@ export default [
       'node_modules/detect-browser/es/index.js': 'window'
     },
     output: {
-      file: 'dist/tategaki.iife.js',
+      file: 'dist/tategaki.min.js',
       format: 'iife',
       generatedCode: 'es2015',
       compact: true,
