@@ -1,13 +1,14 @@
 {
   "name": "tategaki",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Transform HTML elements into vertical writing (Tategaki)",
   "main": "dist/tategaki.cjs.js",
   "module": "dist/tategaki.es.js",
   "types": "dist/dts/tategaki.d.ts",
   "files": [
     "dist",
-    "src"
+    "src",
+    "assets"
   ],
   "scripts": {
     "test": "vite --host",
