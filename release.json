@@ -19,6 +19,11 @@
             "original_style": "https://unpkg.com/tategaki@1.0.6/assets/style.css",
             "style": "https://unpkg.com/tategaki@1.0.6/assets/tategaki.css",
             "script": "https://unpkg.com/tategaki@1.0.6/dist/tategaki.min.js"
+        },
+        "1.0.7": {
+            "original_style": "https://unpkg.com/tategaki@1.0.7/assets/style.css",
+            "style": "https://unpkg.com/tategaki@1.0.7/assets/tategaki.css",
+            "script": "https://unpkg.com/tategaki@1.0.7/dist/tategaki.min.js"
         }
     }
 }
