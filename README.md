@@ -41,12 +41,12 @@ tategaki.parse()
 - In `<head>`:
 
 ```HTML
-<link rel="stylesheet" href="https://unpkg.com/tategaki@1.0.3/assets/css/tategaki.css" />
+<link rel="stylesheet" href="https://unpkg.com/tategaki@1.0.6/assets/tategaki.css" />
 ```
 - At the bottom of `<body>`:
 
 ```HTML
-<script src="https://host.tategaki.de/1.0.0/tategaki.min.js"></script>
+<script src="https://unpkg.com/tategaki@1.0.6/dist/tategaki.min.js"></script>
 ```
 
 Versions can be found at <https://host.tategaki.de/release.json>.
