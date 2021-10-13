@@ -126,7 +126,7 @@ class Tategaki {
             }
             return;
         }
-        if (node.nodeName === 'BR') {
+        if (node.nodeName === 'BR' || node.nodeName === 'RUBY') {
             return;
         }
         const isPara = node.nodeName === 'P' || node.nodeName === 'BLOCKQUOTE';

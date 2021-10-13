@@ -91,7 +91,7 @@ export class Tategaki {
             return
         }
 
-        if (node.nodeName === 'BR') { return }
+        if (node.nodeName === 'BR' || node.nodeName === 'RUBY') { return }
         const isPara = node.nodeName === 'P' || node.nodeName === 'BLOCKQUOTE'
 
         let childNodes = Array.from(node.childNodes)

@@ -181,6 +181,10 @@ ol li {
     text-align: justify;
 }
 
+rt {
+    font-size: 0.57rem;
+}
+
 hr {
     border: none;
     margin: 0;
