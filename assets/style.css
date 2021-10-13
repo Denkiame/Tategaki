@@ -1,3 +1,8 @@
+@font-face {
+    font-family: BopomofoRuby;
+    src: url(https://raw.githubusercontent.com/cmex-30/Bopomofo_on_Web/master/font/BopomofoRuby1909-v1-Regular.ttf);
+}
+
 :root {
     --foreground-colour: #000a0cf5;
     --background-colour: #fdfdfc;
@@ -182,7 +187,31 @@ ol li {
 }
 
 rt {
-    font-size: 0.57rem;
+    font-size: 0.45rem;
+    
+    ruby-align: center;
+    text-align: center;
+    letter-spacing: 0;
+
+    font-feature-settings: "vpal";
+
+    -webkit-font-smoothing: initial;
+    -moz-osx-font-smoothing: initial;
+    text-rendering: initial;
+}
+
+rt.bopomofo {
+    font-family: BopomofoRuby;
+    text-orientation: upright;
+}
+
+rt.pinyin {
+    font-size: 0.6rem;
+    font-family: 'Crimson Pro', Garamond, Georgia, serif;
+    font-weight: 429;
+
+    position: relative;
+    left: 0.1rem;
 }
 
 hr {
