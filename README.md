@@ -41,12 +41,12 @@ tategaki.parse()
 - In `<head>`:
 
 ```HTML
-<link rel="stylesheet" href="https://unpkg.com/tategaki@1.0.6/assets/tategaki.css" />
+<link rel="stylesheet" href="https://unpkg.com/tategaki@1.1.4/assets/tategaki.css" />
 ```
 - At the bottom of `<body>`:
 
 ```HTML
-<script src="https://unpkg.com/tategaki@1.0.6/dist/tategaki.min.js"></script>
+<script src="https://unpkg.com/tategaki@1.1.4/dist/tategaki.min.js"></script>
 ```
 
 Versions can be found at <https://host.tategaki.de/release.json>.
@@ -147,6 +147,31 @@ Versions can be found at <https://host.tategaki.de/release.json>.
 
 .firefox .squeeze-other-punc:last-child {
     text-combine-upright: all;
+}
+```
+
+### Correct Punctuations for `zh-cn`
+
+```css
+.safari .squeeze-other-punc {
+    font-feature-settings: 'locl';
+}
+
+/* Disable glyph replacement in context for Firefox and Chrome */
+.firefox .squeeze-other-punc:last-child {
+    margin-bottom: -1rem;
+}
+
+.chrome .squeeze-other-punc:only-child,
+.firefox .squeeze-other-punc:only-child::before {
+    margin-top: -1rem;
+}
+
+.chrome .squeeze-other-punc:only-child::before,
+.firefox .squeeze-other-punc:only-child::before,
+.firefox .squeeze-other-punc:last-child::after {
+    content: '\2060〇'; /* U+2060 WORD JOINER, avoid punc being first in a line */
+    opacity: 0;
 }
 ```
 
