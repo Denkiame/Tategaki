@@ -48,6 +48,7 @@ export class Tategaki {
             }
             case StringFormatGuide.cjkPunc: {
                 if (this.config.shouldPcS) {
+                    element.setAttribute('lang', 'zh-Hant')
                     element.innerHTML = this.squeeze(segment.content)
                 }
                 break
