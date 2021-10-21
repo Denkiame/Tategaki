@@ -79,6 +79,20 @@
     font-feature-settings: "vhal" 0;
 }
 
-.firefox .squeeze-other-punc:last-child {
-    text-combine-upright: all;
+.safari .squeeze-other-punc {
+    font-feature-settings: 'locl';
+}
+
+.chrome .squeeze-other-punc:only-child,
+.firefox .cjk-punc:last-child .squeeze-other-punc:last-child {
+    margin-top: -1rem;
+    margin-bottom: -1rem;
+}
+
+.chrome .squeeze-other-punc:only-child::before,
+.chrome .squeeze-other-punc:only-child::after,
+.firefox .cjk-punc:last-child .squeeze-other-punc:last-child::before,
+.firefox .cjk-punc:last-child .squeeze-other-punc:last-child::after {
+    content: '〇';
+    opacity: 0;
 }
