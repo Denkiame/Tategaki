@@ -83,8 +83,8 @@
     font-feature-settings: 'locl';
 }
 
-/* Disable glyph replacement in context for Firfox and Chrome */
-.firefox .cjk-punc:last-child .squeeze-other-punc:last-child {
+/* Disable glyph replacement in context for Firefox and Chrome */
+.firefox .squeeze-other-punc:last-child {
     margin-bottom: -1rem;
 }
 
@@ -93,7 +93,7 @@
 }
 
 .chrome .squeeze-other-punc:only-child::before,
-.firefox .cjk-punc:last-child .squeeze-other-punc:last-child::after {
+.firefox .squeeze-other-punc:last-child::after {
     content: '\2060〇'; /* U+2060 WORD JOINER, avoid punc being first in a line */
     opacity: 0;
 }
