@@ -70,7 +70,8 @@ export class Tategaki {
             }
             return;
         }
-        if (node.nodeName === 'BR' || node.nodeName === 'RUBY') {
+        const IGNORE_TAGS = ['BR', 'RUBY', 'PRE'];
+        if (IGNORE_TAGS.indexOf(node.nodeName) !== -1) {
             return;
         }
         const isPara = node.nodeName === 'P' || node.nodeName === 'BLOCKQUOTE';
