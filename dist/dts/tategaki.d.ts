@@ -4,6 +4,7 @@ interface Config {
     imitatePcS?: boolean;
     imitateTransfromToFullWidth?: boolean;
     shouldRemoveStyle?: boolean;
+    convertNewlineCustom?: boolean;
 }
 export declare class Tategaki {
     rootElement: Element;

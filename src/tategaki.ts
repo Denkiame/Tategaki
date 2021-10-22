@@ -6,6 +6,7 @@ interface Config {
     imitatePcS ?: boolean
     imitateTransfromToFullWidth ?: boolean
     shouldRemoveStyle ?: boolean
+    convertNewlineCustom ?: boolean
 }
 
 export class Tategaki {
@@ -19,7 +20,8 @@ export class Tategaki {
             shouldPcS: true,
             imitatePcS: true,
             imitateTransfromToFullWidth: true,
-            shouldRemoveStyle: false
+            shouldRemoveStyle: false,
+            convertNewlineCustom: false
         }
 
         this.config = Object.assign({}, defaultConfig, config)
@@ -58,8 +60,11 @@ export class Tategaki {
     }
 
     private postProcess(text: string): string {
+        if (this.config.convertNewlineCustom) {
+            text = text.replace(/\n[ \n]*/g, `<br /><span class="indent"></span>`)
+        }
+
         return text
-            .replace(/\n[ \n]*/g, `<br /><span class="indent"></span>`)
     }
 
     private format(node: Node, passUntilPara: boolean=true) {

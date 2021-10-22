@@ -9,7 +9,8 @@ export class Tategaki {
             shouldPcS: true,
             imitatePcS: true,
             imitateTransfromToFullWidth: true,
-            shouldRemoveStyle: false
+            shouldRemoveStyle: false,
+            convertNewlineCustom: false
         };
         this.config = Object.assign({}, defaultConfig, config);
     }
@@ -43,8 +44,10 @@ export class Tategaki {
         element.classList.add(segment.formatGuide);
     }
     postProcess(text) {
-        return text
-            .replace(/\n[ \n]*/g, `<br /><span class="indent"></span>`);
+        if (this.config.convertNewlineCustom) {
+            text = text.replace(/\n[ \n]*/g, `<br /><span class="indent"></span>`);
+        }
+        return text;
     }
     format(node, passUntilPara = true) {
         if (node.nodeType === Node.TEXT_NODE) {
