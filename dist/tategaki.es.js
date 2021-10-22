@@ -122,7 +122,7 @@ class Tategaki {
             }
             return;
         }
-        const IGNORE_TAGS = ['BR', 'RUBY', 'PRE'];
+        const IGNORE_TAGS = ['BR', 'RUBY', 'PRE', 'CODE'];
         if (IGNORE_TAGS.indexOf(node.nodeName) !== -1) {
             return;
         }
