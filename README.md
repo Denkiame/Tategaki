@@ -22,11 +22,15 @@ import { Tategaki } from 'tategaki'
  *   - shouldPcS: boolean=true
  *   - imitatePcS: boolean=true (Using customised PcS instead of OpenType `vhal`)
  *   - imitateTransfromToFullWidth: boolean=true (Using customised full-width transfomation instead of OpenType `fwid`)
+ *   - shouldRemoveStyle: boolean=false (Remove `style`, `width` and `height` attributes)
+ *   - convertNewlineCustom: boolean=false (Convert extra `\n` to custom newline)
  */
 let tategaki = new Tategaki(article, {
     shouldPcS: true,
     imitatePcS: false,
-    imitateTransfromToFullWidth: false
+    imitateTransfromToFullWidth: false,
+    shouldRemoveStyle: false,
+    convertNewlineCustom: false
 })
 tategaki.parse()
 ```
@@ -41,12 +45,12 @@ tategaki.parse()
 - In `<head>`:
 
 ```HTML
-<link rel="stylesheet" href="https://unpkg.com/tategaki@1.1.4/assets/tategaki.css" />
+<link rel="stylesheet" href="https://unpkg.com/tategaki@1.1.7/assets/tategaki.css" />
 ```
 - At the bottom of `<body>`:
 
 ```HTML
-<script src="https://unpkg.com/tategaki@1.1.4/dist/tategaki.min.js"></script>
+<script src="https://unpkg.com/tategaki@1.1.7/dist/tategaki.min.js"></script>
 ```
 
 Versions can be found at <https://host.tategaki.de/release.json>.
