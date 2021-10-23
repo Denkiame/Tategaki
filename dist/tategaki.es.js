@@ -125,7 +125,19 @@ class Tategaki {
             }
             return;
         }
-        const IGNORE_TAGS = ['BR', 'RUBY', 'PRE', 'CODE'];
+        if (node.nodeName == 'BR') {
+            let parentElement = node.parentElement;
+            if (parentElement) {
+                let br = document.createElement('br');
+                let span = document.createElement('span');
+                span.classList.add('indent');
+                parentElement.insertBefore(br, node);
+                parentElement.insertBefore(span, node);
+                parentElement.removeChild(node);
+            }
+            return;
+        }
+        const IGNORE_TAGS = ['BR', 'RUBY', 'PRE', 'CODE', 'IMG'];
         if (IGNORE_TAGS.indexOf(node.nodeName) !== -1) {
             return;
         }
