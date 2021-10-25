@@ -4,7 +4,9 @@
 
 ## Usage
 
-### TypeScript module
+### TypeScript Module
+
+Install with `npm install tategaki`.
 
 1. Import `Tategaki`:
 
