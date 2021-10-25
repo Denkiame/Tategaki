@@ -1,0 +1,101 @@
+.tategaki {
+    writing-mode: vertical-rl;
+
+    hanging-punctuation: allow-end last;
+
+    text-align: justify;
+}
+
+.latin {
+    -webkit-hyphens: auto;
+    hyphens: auto;
+
+    -webkit-hyphenate-limit-before: 3;
+    -webkit-hyphenate-limit-after: 2;
+    -ms-hyphenate-limit-chars: 6 3 2;
+    hyphenate-limit-chars: 6 3 2;
+}
+
+.kana {
+    font-feature-settings: "vpal";
+}
+
+.tcy {
+    -webkit-text-combine: horizontal;
+    -ms-text-combine-horizontal: all;
+    text-combine-upright: all;
+    position: static !important;
+}
+
+.to-fullwidth {
+    font-feature-settings: "fwid";
+    text-transform: full-width;
+}
+
+/* Correct CJK dashes */
+.aalt-on {
+    font-feature-settings: "aalt";
+}
+
+/* Imitate PcS (Add space and strink height)  */
+.imitate-pcs .squeeze-out {
+    letter-spacing: -0.5rem;
+}
+
+.imitate-pcs .squeeze-in {
+    margin-top: -0.5rem;
+}
+
+.squeeze-in + .squeeze-in-space {
+    display: none;
+}
+
+.squeeze-other-punc + .squeeze-in-space {
+    display: none;
+}
+
+.squeeze-out-space {
+    display: none;
+}
+
+.squeeze-out-space:last-child {
+    display: inline;
+}
+
+/* PcS: Using OpenType `vhal` */
+.opentype-pcs .squeeze-other-punc + .squeeze-in {
+    font-feature-settings: "vhal";
+}
+
+.opentype-pcs .squeeze-in + .squeeze-in {
+    font-feature-settings: "vhal";
+}
+
+.opentype-pcs .squeeze-out {
+    font-feature-settings: "vhal";
+}
+
+.opentype-pcs .squeeze-out:last-child {
+    font-feature-settings: "vhal" 0;
+}
+
+.safari .squeeze-other-punc {
+    font-feature-settings: 'locl';
+}
+
+/* Disable glyph replacement in context for Firefox and Chrome */
+.firefox .squeeze-other-punc:last-child {
+    margin-bottom: -1rem;
+}
+
+.chrome .squeeze-other-punc:only-child,
+.firefox .squeeze-other-punc:only-child::before {
+    margin-top: -1rem;
+}
+
+.chrome .squeeze-other-punc:only-child::before,
+.firefox .squeeze-other-punc:only-child::before,
+.firefox .squeeze-other-punc:last-child::after {
+    content: '\2060〇'; /* U+2060 WORD JOINER, avoid punc being first in a line */
+    opacity: 0;
+}
