@@ -48,6 +48,10 @@ export class Tategaki {
                 element.setAttribute('lang', 'en')
                 break
             }
+            case StringFormatGuide.kana: {
+                element.setAttribute('lang', 'jp')
+                break
+            }
             case StringFormatGuide.cjkPunc: {
                 if (this.config.shouldPcS) {
                     element.innerHTML = this.squeeze(segment.content)
