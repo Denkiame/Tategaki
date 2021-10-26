@@ -271,10 +271,11 @@ hr::before {
     font-family: 'Noto Serif TC', serif !important;
 }
 
-.chrome .squeeze-in, .chrome .squeeze-out {
+.chrome .squeeze-in, .chrome .squeeze-out,
+.edge-chromium .squeeze-in, .edge-chromium .squeeze-out {
     font-family: 'Noto Serif TC', serif !important;
 }
 
-.chrome .tcy {
+.chrome .tcy, .edge-chromium .tcy {
     text-indent: 0;
 }

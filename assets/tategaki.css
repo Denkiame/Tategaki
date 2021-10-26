@@ -89,11 +89,13 @@
 }
 
 .chrome .squeeze-other-punc:only-child,
+.edge-chromium .squeeze-other-punc:only-child,
 .firefox .squeeze-other-punc:only-child::before {
     margin-top: -1rem;
 }
 
 .chrome .squeeze-other-punc:only-child::before,
+.edge-chromium .squeeze-other-punc:only-child::before,
 .firefox .squeeze-other-punc:only-child::before,
 .firefox .squeeze-other-punc:last-child::after {
     content: '\2060〇'; /* U+2060 WORD JOINER, avoid punc being first in a line */
