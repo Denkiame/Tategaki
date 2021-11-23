@@ -138,7 +138,8 @@ export class Tategaki {
     // Raw replacements for specific puncs & symbols
     private correctPuncs(text: string): string {
         return text
-            .replace(/——|──/g, '――')
+            .replace(/──/g, '――')
+            .replace(/—/g, '―')
             .replace(/……/g, '⋯⋯')
             .replace(/！！|\!\!/g, '‼')
             .replace(/？？|\?\?/g, '⁇')
