@@ -16,6 +16,8 @@
     --a-visited-colour: #084452;
     --selection-colour: #12788f32;
     --img-onhover-colour: rgba(0, 0, 0, .06);
+    --side-right-gradient-background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.383) 25%, rgba(255,255,255,0.707) 50%, rgba(255,255,255,0.924) 75%, rgba(255,255,255,1) 100%);
+    --side-left-gradient-background: linear-gradient(270deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.383) 25%, rgba(255,255,255,0.707) 50%, rgba(255,255,255,0.924) 75%, rgba(255,255,255,1) 100%);
 }
 
 @media screen and (prefers-color-scheme: dark) {
@@ -27,6 +29,8 @@
         --a-visited-colour: #56b8cd;
         --selection-colour: #91d6e532;
         --img-onhover-colour: rgba(255, 255, 255, .06); 
+        --side-right-gradient-background: linear-gradient(90deg, rgba(22,22,24,0) 0%, rgba(22,22,24,0.383) 25%, rgba(22,22,24,0.707) 50%, rgba(22,22,24,0.924) 75%, rgba(22,22,24,1) 100%);
+        --side-left-gradient-background: linear-gradient(270deg, rgba(22,22,24,0) 0%, rgba(22,22,24,0.383) 25%, rgba(22,22,24,0.707) 50%, rgba(22,22,24,0.924) 75%, rgba(22,22,24,1) 100%);
     }
 
     html {
@@ -278,4 +282,22 @@ hr::before {
 
 .chrome .tcy, .edge-chromium .tcy {
     text-indent: 0;
+}
+
+.side-right-gradient {
+    height: 100vh;
+    position: fixed;
+    right: 0;
+    width: 6px;
+    background: var(--side-right-gradient-background);
+    z-index: 100;
+}
+
+.side-left-gradient {
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    width: 6px;
+    background: var(--side-left-gradient-background);
+    z-index: 100;
 }
