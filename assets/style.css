@@ -139,7 +139,7 @@ a:hover {
 }
 
 /* Image */
-img {
+img, canvas {
     max-height: 30rem;
 }
 
