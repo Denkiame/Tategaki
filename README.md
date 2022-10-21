@@ -1,6 +1,6 @@
 # Tategaki
 
-**Tategaki** translates HTML elements to tategaki, i.e. vertical writing.
+**Tategaki** translates HTML elements to vertical writing.
 
 ## Usage
 
@@ -61,25 +61,21 @@ interface Config {
 - In `<head>`:
 
 ```HTML
-<link rel="stylesheet" href="https://unpkg.com/tategaki@1.1.7/assets/tategaki.css" />
+<link rel="stylesheet" href="https://unpkg.com/tategaki/assets/tategaki.css" />
 ```
 - At the bottom of `<body>`:
 
 ```HTML
-<script src="https://unpkg.com/tategaki@1.1.7/dist/tategaki.min.js"></script>
+<script src="https://unpkg.com/tategaki/dist/tategaki.min.js"></script>
 ```
-
-Versions can be found at <https://host.tategaki.de/release.json>.
 
 ## Recommended Style
 
 ### Text
 
-```cSS
+```CSS
 .tategaki {
     writing-mode: vertical-rl;
-
-    hanging-punctuation: allow-end last;
 
     text-align: justify;
 }
@@ -109,7 +105,7 @@ Versions can be found at <https://host.tategaki.de/release.json>.
     position: static !important;
 }
 
-.to-fullwidth {
+.full-width {
     font-feature-settings: "fwid";
     text-transform: full-width;
 }
@@ -165,8 +161,8 @@ Versions can be found at <https://host.tategaki.de/release.json>.
     font-feature-settings: "vhal" 0;
 }
 
-.firefox .squeeze-other-punc:last-child {
-    text-combine-upright: all;
+.safari .squeeze-other-punc {
+    font-feature-settings: 'locl';
 }
 ```
 
