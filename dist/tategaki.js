@@ -8,18 +8,19 @@ export class Tategaki {
         const defaultConfig = {
             shouldPcS: true,
             imitatePcS: true,
-            imitateTransfromToFullWidth: true,
+            imitatePcFwid: true,
+            imitateTcyShortWord: false,
             shouldRemoveStyle: false,
             convertNewlineCustom: false
         };
         this.config = Object.assign({}, defaultConfig, config);
     }
     parse() {
+        this.rootElement.classList.add('tategaki');
+        this.rootElement.classList.add(this.config.imitatePcS ? 'imitate-pcs' : 'opentype-pcs');
         if (this.config.shouldRemoveStyle) {
             this.removeStyle();
         }
-        this.rootElement.classList.add('tategaki');
-        this.rootElement.classList.add(this.config.imitatePcS ? 'imitate-pcs' : 'opentype-pcs');
         this.format(this.rootElement);
         this.tcy();
         this.correctAmbiguous();
@@ -56,7 +57,7 @@ export class Tategaki {
     format(node, passUntilPara = true) {
         if (node.nodeType === Node.TEXT_NODE) {
             let text = node.nodeValue;
-            if (!text.trim()) {
+            if (text && !text.trim()) {
                 return;
             }
             text = this.correctPuncs(text);
@@ -80,7 +81,7 @@ export class Tategaki {
         if (node.nodeName == 'BR') {
             let parentElement = node.parentElement;
             if (parentElement) {
-                let br = document.createElement('br');
+                const br = document.createElement('br');
                 let span = document.createElement('span');
                 span.classList.add('indent');
                 parentElement.insertBefore(br, node);
@@ -94,8 +95,7 @@ export class Tategaki {
             return;
         }
         const isPara = node.nodeName === 'P' || node.nodeName === 'BLOCKQUOTE';
-        let childNodes = Array.from(node.childNodes);
-        childNodes.forEach(childNode => {
+        Array.from(node.childNodes).forEach(childNode => {
             this.format(childNode, isPara ? false : passUntilPara);
         });
     }
@@ -107,16 +107,13 @@ export class Tategaki {
             this.removeStyle(child);
         });
     }
-    correctPuncs(text) {
-        return text
-            .replace(/──/g, '――')
-            .replace(/—/g, '―')
-            .replace(/……/g, '⋯⋯')
-            .replace(/！！|\!\!/g, '‼')
-            .replace(/？？|\?\?/g, '⁇')
-            .replace(/？！|\?\!/g, '⁈')
-            .replace(/！？|\!\?/g, '⁉');
-    }
+    correctPuncs = (text) => text.replace(/──/g, '――')
+        .replace(/—/g, '―')
+        .replace(/……/g, '⋯⋯')
+        .replace(/！！|\!\!/g, '‼')
+        .replace(/？？|\?\?/g, '⁇')
+        .replace(/？！|\?\!/g, '⁈')
+        .replace(/！？|\!\?/g, '⁉');
     squeeze(puncs) {
         return puncs.split('').map(punc => {
             if (/[\u203c\u2047-\u2049\u3001\u3002\uff0c\uff01\uff1a\uff1b\uff1f]/.test(punc)) {
@@ -163,24 +160,26 @@ export class Tategaki {
                         element.parentElement.nodeName != 'I' &&
                         element.parentElement.nodeName != 'EM')) {
                 if (text.length == 1) {
-                    if (this.config.imitateTransfromToFullWidth) {
+                    if (this.config.imitatePcFwid) {
                         element.innerHTML = this.transfromToFullWidth(text);
                     }
                     else {
                         element.innerHTML = text;
-                        element.classList.add('to-fullwidth');
+                        element.classList.add('full-width');
                     }
+                    element.classList.add('tcy-single');
                     element.classList.remove('latin');
                     element.removeAttribute('lang');
                 }
                 else if (/^([A-Z]{3,10}|\d{4,10})$/.test(text)) {
-                    if (this.config.imitateTransfromToFullWidth) {
+                    if (this.config.imitatePcFwid) {
                         element.innerHTML = Array.from(text, x => this.transfromToFullWidth(x)).join('');
                     }
                     else {
                         element.innerHTML = text;
-                        element.classList.add('to-fullwidth');
+                        element.classList.add('full-width');
                     }
+                    element.classList.add('tcy-single');
                     element.classList.remove('latin');
                     element.removeAttribute('lang');
                 }
@@ -201,16 +200,18 @@ export class Tategaki {
                     element.replaceWith(newElement);
                 }
                 else {
-                    let threshold = fontSize;
-                    if (element.innerHTML != text) {
-                        threshold *= 1.5;
-                    }
-                    else {
-                        threshold *= 1.333;
-                    }
-                    if (element.getBoundingClientRect().height <= threshold) {
-                        element.innerHTML = text;
-                        element.classList.add('tcy');
+                    if (this.config.imitateTcyShortWord) {
+                        let threshold = fontSize;
+                        if (element.innerHTML != text) {
+                            threshold *= 1.5;
+                        }
+                        else {
+                            threshold *= 1.333;
+                        }
+                        if (element.getBoundingClientRect().height <= threshold) {
+                            element.innerHTML = text;
+                            element.classList.add('tcy');
+                        }
                     }
                 }
             }
@@ -220,15 +221,16 @@ export class Tategaki {
         Array.from(document.getElementsByClassName(StringFormatGuide.ambiguous), element => {
             if (element.innerHTML === '――') {
                 element.classList.add('aalt-on');
+                element.classList.add(StringFormatGuide.cjkPunc);
                 return;
             }
             if (!element.previousElementSibling || !element.nextElementSibling) {
-                element.classList.add('latin');
+                element.classList.add(StringFormatGuide.latin);
                 return;
             }
             if (element.previousElementSibling.classList.contains(StringFormatGuide.latin) &&
                 element.nextElementSibling.classList.contains(StringFormatGuide.latin)) {
-                element.classList.add('latin');
+                element.classList.add(StringFormatGuide.latin);
                 return;
             }
             switch (element.innerHTML) {

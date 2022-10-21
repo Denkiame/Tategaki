@@ -1,8 +1,6 @@
 .tategaki {
     writing-mode: vertical-rl;
 
-    hanging-punctuation: allow-end last;
-
     text-align: justify;
 }
 
@@ -27,7 +25,7 @@
     position: static !important;
 }
 
-.to-fullwidth {
+.full-width {
     font-feature-settings: "fwid";
     text-transform: full-width;
 }

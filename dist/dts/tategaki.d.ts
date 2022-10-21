@@ -2,7 +2,8 @@ import './extensions';
 interface Config {
     shouldPcS?: boolean;
     imitatePcS?: boolean;
-    imitateTransfromToFullWidth?: boolean;
+    imitatePcFwid?: boolean;
+    imitateTcyShortWord?: boolean;
     shouldRemoveStyle?: boolean;
     convertNewlineCustom?: boolean;
 }

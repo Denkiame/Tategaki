@@ -6,10 +6,11 @@ declare global {
     }
 }
 
-String.prototype.segmentise = function (re) {
+/** Separate the string into parts. Each part continas its `StringFormatGuide` type */
+String.prototype.segmentise = function(re) {
     let str = String(this) 
     let segments: StringFormatSegment[] = []
-    let index: number = 0
+    let index = 0
     let match: RegExpExecArray | null
     while (match = re.exec(str)) {
         if (match.index > index) {
@@ -19,7 +20,7 @@ String.prototype.segmentise = function (re) {
             })
         }
 
-        let formatGuide: StringFormatGuide | undefined
+        let formatGuide: StringFormatGuide
         if (match[1]) {
             formatGuide = StringFormatGuide.ambiguous
         } else if (match[2]) {
@@ -30,13 +31,11 @@ String.prototype.segmentise = function (re) {
             formatGuide = StringFormatGuide.latin
         } else if (match[5]) {
             formatGuide = StringFormatGuide.kana
-        } else {
-            formatGuide = StringFormatGuide.default
-        }
+        } else { formatGuide = StringFormatGuide.default }
 
         segments.push({
             content: match[0],
-            formatGuide: formatGuide!
+            formatGuide: formatGuide
         })
         index = match.index + match[0].length
     }
@@ -47,5 +46,6 @@ String.prototype.segmentise = function (re) {
             formatGuide: StringFormatGuide.default
         })
     }
+
     return segments
 }

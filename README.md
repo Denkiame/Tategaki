@@ -17,24 +17,38 @@ import { Tategaki } from 'tategaki'
 2. Link an `HTMLElement` and parse. Suppose the root `article` is an `Element`:
 
 ```TypeScript
-/*
- * `Tategaki` arguments:
- * - rootElement: Element
- * - config: Object
- *   - shouldPcS: boolean=true
- *   - imitatePcS: boolean=true (Using customised PcS instead of OpenType `vhal`)
- *   - imitateTransfromToFullWidth: boolean=true (Using customised full-width transfomation instead of OpenType `fwid`)
- *   - shouldRemoveStyle: boolean=false (Remove `style`, `width` and `height` attributes)
- *   - convertNewlineCustom: boolean=false (Convert extra `\n` to custom newline)
- */
+// Example (default configuration)
 let tategaki = new Tategaki(article, {
     shouldPcS: true,
-    imitatePcS: false,
-    imitateTransfromToFullWidth: false,
+    imitatePcS: true,
+    imitatePcFwid: true,
+    imitateTcyShortWord: false,
     shouldRemoveStyle: false,
     convertNewlineCustom: false
 })
 tategaki.parse()
+
+// Configuration explained
+interface Config {
+    /** Punctuation Squeeze (PcS) */
+    shouldPcS?: boolean
+    /** Use customised PcS tagging instead of OpenType feature `vhal`. */
+    imitatePcS?: boolean
+    /** Transform certain half-width puncuations to full-width ones without using OpenType `fwid`. */
+    imitatePcFwid?: boolean
+
+    /**
+     * Rotate words of short length.
+     * The original width of a word will be calculated and compared with a threshold value.
+     * (Buggy in WebKit on macOS Ventura Beta)
+     */
+    imitateTcyShortWord?: boolean
+
+    /** Remove `style`, `width` and `height` attributes. */
+    shouldRemoveStyle?: boolean
+    /** Convert multiple `\n`s to a customised newline element. */
+    convertNewlineCustom?: boolean
+}
 ```
 
 - A `tategaki` class will be attached to the root element.

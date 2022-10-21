@@ -2,11 +2,24 @@ import { StringFormatSegment, StringFormatGuide } from './formatSegment'
 import './extensions'
 
 interface Config {
-    shouldPcS ?: boolean
-    imitatePcS ?: boolean
-    imitateTransfromToFullWidth ?: boolean
-    shouldRemoveStyle ?: boolean
-    convertNewlineCustom ?: boolean
+    /** Punctuation Squeeze (PcS) */
+    shouldPcS?: boolean
+    /** Use customised PcS tagging instead of OpenType feature `vhal`. */
+    imitatePcS?: boolean
+    /** Transform certain half-width puncuations to full-width ones without using OpenType `fwid`. */
+    imitatePcFwid?: boolean
+
+    /**
+     * Rotate words of short length.
+     * The original width of a word will be calculated and compared with a threshold value.
+     * (Buggy in WebKit on macOS Ventura Beta)
+     */
+    imitateTcyShortWord?: boolean
+
+    /** Remove `style`, `width` and `height` attributes. */
+    shouldRemoveStyle?: boolean
+    /** Convert multiple `\n`s to a customised newline element. */
+    convertNewlineCustom?: boolean
 }
 
 export class Tategaki {
@@ -19,7 +32,8 @@ export class Tategaki {
         const defaultConfig: Config = {
             shouldPcS: true,
             imitatePcS: true,
-            imitateTransfromToFullWidth: true,
+            imitatePcFwid: true,
+            imitateTcyShortWord: false,
             shouldRemoveStyle: false,
             convertNewlineCustom: false
         }
@@ -28,11 +42,10 @@ export class Tategaki {
     }
 
     parse() {
-        if (this.config.shouldRemoveStyle) { this.removeStyle() }
-
         this.rootElement.classList.add('tategaki')
         this.rootElement.classList.add(this.config.imitatePcS ? 'imitate-pcs' : 'opentype-pcs')
 
+        if (this.config.shouldRemoveStyle) { this.removeStyle() }
         this.format(this.rootElement)
         this.tcy()
         this.correctAmbiguous()
@@ -71,16 +84,17 @@ export class Tategaki {
         return text
     }
 
-    private format(node: Node, passUntilPara: boolean=true) {
+    private format(node: Node, passUntilPara=true) {
         if (node.nodeType === Node.TEXT_NODE) {
-            let text = node.nodeValue!
-            if (!text.trim()) { return }
-            text = this.correctPuncs(text)
+            let text = node.nodeValue
+            if (text && !text.trim()) { return }
+            text = this.correctPuncs(text!)
 
+            // RegEx for dividing text to seperate <span>s.
             // (AMBIGUOUS)|(CJK_PUNC)|(FULL_WIDTH_ALPHABET)|(LATIN)|(KANA)
             let re = /([\u002f\u2013]+|――)|([\u203c\u2047-\u2049\u3001\u3002\u301d\u301f\uff01\uff0c\uff1a\uff1b\uff1f\u3008-\u3011\u3014-\u301B\uff08\uff09]+)|([\uff21-\uff3a\uff41-\uff5a]+)|([\p{Script=Latin}0-9\u0020-\u0023\u0025-\u002b\u002c-\u002e\u003a\u003b\u003f\u0040\u005b-\u005d\u005f\u007b\u007d\u00a0\u00a1\u00a7\u00ab\u00b2\u00b3\u00b6\u00b7\u00b9\u00bb-\u00bf\u2010-\u2012\u2018\u2019\u201c\u201d\u2020\u2021\u2026\u2027\u2030\u2032-\u2037\u2039\u203a\u203d-\u203e\u204e\u2057\u2070\u2074-\u2079\u2080-\u2089\u2150\u2153\u2154\u215b-\u215e\u2160-\u217f\u2474-\u249b\u2e18\u2e2e]+)|([\u3041-\u309f\u30a0-\u30fa\u30fc\u30ff]+)/gu
 
-            let segments = text.segmentise(re)
+            let segments = text.segmentise(re)  // Define in `external.ts`.
 
             let parentElement = node.parentElement!
             if (!parentElement.childElementCount && segments.length === 1) {
@@ -103,7 +117,7 @@ export class Tategaki {
         if (node.nodeName == 'BR') {
             let parentElement = node.parentElement
             if (parentElement) {
-                let br = document.createElement('br')
+                const br = document.createElement('br')
                 let span = document.createElement('span')
                 span.classList.add('indent')
 
@@ -119,13 +133,12 @@ export class Tategaki {
         if (IGNORE_TAGS.indexOf(node.nodeName) !== -1) { return }
         const isPara = node.nodeName === 'P' || node.nodeName === 'BLOCKQUOTE'
 
-        let childNodes = Array.from(node.childNodes)
-        childNodes.forEach(childNode => {
+        Array.from(node.childNodes).forEach(childNode => {
             this.format(childNode, isPara ? false : passUntilPara)
         })
     }
 
-    private removeStyle(element: Element=this.rootElement) {
+    private removeStyle(element=this.rootElement) {
         element.removeAttribute('style')
         element.removeAttribute('width')
         element.removeAttribute('height')
@@ -135,17 +148,15 @@ export class Tategaki {
         })
     }
 
-    // Raw replacements for specific puncs & symbols
-    private correctPuncs(text: string): string {
-        return text
-            .replace(/──/g, '――')
-            .replace(/—/g, '―')
+    /** Raw replacements for specific puncs to be correctly displayed */
+    private correctPuncs = (text: string) =>
+        text.replace(/──/g, '――')  // U+2500 -> U+2015
+            .replace(/—/g, '―')  // U+2014 (EM dash) -> U+2015
             .replace(/……/g, '⋯⋯')
             .replace(/！！|\!\!/g, '‼')
             .replace(/？？|\?\?/g, '⁇')
             .replace(/？！|\?\!/g, '⁈')
             .replace(/！？|\!\?/g, '⁉')
-    }
 
     private squeeze(puncs: string): string {
         return puncs.split('').map(punc => {
@@ -202,24 +213,26 @@ export class Tategaki {
                 // Words with only one lettre should turn to full-width
                 // and lose `latin` class
                 if (text.length == 1) {
-                    if (this.config.imitateTransfromToFullWidth) {
+                    if (this.config.imitatePcFwid) {
                         element.innerHTML = this.transfromToFullWidth(text)
                     } else {
                         element.innerHTML = text
-                        element.classList.add('to-fullwidth')
+                        element.classList.add('full-width')
                     }
+                    element.classList.add('tcy-single')
                     element.classList.remove('latin')
                     element.removeAttribute('lang')
                 // Abbreviations and numbers no more than 4 digits should
                 // turn to full-width
                 } else if (/^([A-Z]{3,10}|\d{4,10})$/.test(text))  {
-                    if (this.config.imitateTransfromToFullWidth) {
+                    if (this.config.imitatePcFwid) {
                         element.innerHTML = Array.from(text, x => 
                             this.transfromToFullWidth(x)).join('')
                     } else {
                         element.innerHTML = text
-                        element.classList.add('to-fullwidth')
+                        element.classList.add('full-width')
                     }
+                    element.classList.add('tcy-single')
                     element.classList.remove('latin')
                     element.removeAttribute('lang')
                 } else if (/^[A-Z]{2}$|^\d{2,3}$/.test(text)) {
@@ -227,8 +240,7 @@ export class Tategaki {
                     element.classList.remove('latin')
                     element.removeAttribute('lang')
                     element.classList.add('tcy')
-                // Percentage
-                } else if (/^\d{1,3}%$/.test(text)) {
+                } else if (/^\d{1,3}%$/.test(text)) {  // Percentage
                     const matches = /^(\d{1,3})%$/.exec(text)!
                     let newElement = document.createElement('span')
                     let digit = matches[1]
@@ -237,20 +249,21 @@ export class Tategaki {
                     }
                     newElement.innerHTML = `<span ${digit.length == 1 ? '' : 'class="tcy"'}>${digit}</span>&#8288;％`
                     element.replaceWith(newElement)
-                // Measure height of the element to decide if TCY
-                } else {
-                    let threshold = fontSize
-                    if (element.innerHTML != text) {
-                        // Need adjusting
-                        threshold *= 1.5
-                    } else {
-                        threshold *= 1.333
-                    }
+                } else {  // Measure height of the element to decide if TCY
+                    if (this.config.imitateTcyShortWord) {
+                        let threshold = fontSize
+                        if (element.innerHTML != text) {
+                            // Need adjusting
+                            threshold *= 1.5
+                        } else {
+                            threshold *= 1.333
+                        }
 
-                    if (element.getBoundingClientRect().height <= threshold) {
-                        element.innerHTML = text
-                        element.classList.add('tcy')
-                    }
+                        if (element.getBoundingClientRect().height <= threshold) {
+                            element.innerHTML = text
+                            element.classList.add('tcy')
+                        }
+                    }                        
                 }
             }
         })
@@ -260,17 +273,18 @@ export class Tategaki {
         Array.from(document.getElementsByClassName(StringFormatGuide.ambiguous), element => {
             if (element.innerHTML === '――') {
                 element.classList.add('aalt-on')
+                element.classList.add(StringFormatGuide.cjkPunc)
                 return
             }
 
             if (!element.previousElementSibling || !element.nextElementSibling) {
-                element.classList.add('latin')
+                element.classList.add(StringFormatGuide.latin)
                 return
             }
 
             if (element.previousElementSibling.classList.contains(StringFormatGuide.latin) &&
                 element.nextElementSibling.classList.contains(StringFormatGuide.latin)) {
-                element.classList.add('latin')
+                element.classList.add(StringFormatGuide.latin)
                 return
             }
 
