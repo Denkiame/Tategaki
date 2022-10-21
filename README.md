@@ -4,7 +4,7 @@
 
 ## Usage
 
-### TypeScript Module
+### As TypeScript Module
 
 Install with `npm install tategaki`.
 
@@ -52,11 +52,11 @@ interface Config {
 ```
 
 - A `tategaki` class will be attached to the root element.
-- It'll split the element into several types of `<span>` (`cjk`, `latin`, etc. ) so that the style can be further customised.
-- Punctuation squeezing (PcS) will be **automatically applied**. You can turn it off when initialising (`new Tategaki(article, false)`).
-- You can import `tategaki.css` (listed below) for styling.
+- It'll separate the element into several types of `<span>` (`cjk`, `latin`, etc. ) so that its style can be further customised.
+- Punctuation Squeeze (PcS) will be **automatically applied**. You can turn it off when initialising.
+- You can also import `tategaki.css` (listed below) for styling.
 
-### Embedded in HTML
+### Or, Embedded in HTML
 
 - In `<head>`:
 
@@ -68,6 +68,7 @@ interface Config {
 ```HTML
 <script src="https://unpkg.com/tategaki/dist/tategaki.min.js"></script>
 ```
+An element with `tategaki` class will be parsed and styled.
 
 ## Recommended Style
 
