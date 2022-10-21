@@ -34,7 +34,7 @@ interface Config {
     shouldPcS?: boolean
     /** Use customised PcS tagging instead of OpenType feature `vhal`. */
     imitatePcS?: boolean
-    /** Transform certain half-width puncuations to full-width ones without using OpenType `fwid`. */
+    /** Transform certain half-width punctuations to full-width ones without using OpenType `fwid`. */
     imitatePcFwid?: boolean
 
     /**
