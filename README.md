@@ -4,7 +4,7 @@
 
 ## Usage
 
-### As TypeScript Module
+### As module
 
 Install with `npm install tategaki`.
 
