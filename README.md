@@ -56,7 +56,7 @@ interface Config {
 - Punctuation Squeeze (PcS) will be **automatically applied**. You can turn it off when initialising.
 - You can also import `tategaki.css` (listed below) for styling.
 
-### Or, Embedded in HTML
+### Or embedded in HTML
 
 - In `<head>`:
 
