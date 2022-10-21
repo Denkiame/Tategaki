@@ -15,6 +15,8 @@ interface Config {
      * (Buggy in WebKit on macOS Ventura Beta)
      */
     imitateTcyShortWord?: boolean
+    /** Not allow the last line of a paragraph to only contain a single Kanji. */
+    shouldAdjustOrphanLine?: boolean
 
     /** Remove `style`, `width` and `height` attributes. */
     shouldRemoveStyle?: boolean
@@ -34,6 +36,7 @@ export class Tategaki {
             imitatePcS: true,
             imitatePcFwid: true,
             imitateTcyShortWord: false,
+            shouldAdjustOrphanLine: false,
             shouldRemoveStyle: false,
             convertNewlineCustom: false
         }
@@ -49,6 +52,23 @@ export class Tategaki {
         this.format(this.rootElement)
         this.tcy()
         this.correctAmbiguous()
+        if (this.config.shouldAdjustOrphanLine) { this.insertWordJoiner() }
+    }
+
+    private insertWordJoiner() {
+        let paras = Array.from(
+            this.rootElement.querySelectorAll('p:not(.no-indent):not(.original-post)'))
+        paras.forEach(para => {
+            let children = para.children
+            let lastButOneSpan = children[children.length-2]
+            let re = /\p{Script_Extensions=Han}{2}$/gu
+            if (lastButOneSpan.classList.length === 0 &&
+                re.test(lastButOneSpan.innerHTML)) {
+                let text = lastButOneSpan.innerHTML
+                lastButOneSpan.innerHTML =
+                    text.slice(0, -1) + '&#8288;' + text.slice(-1, text.length)
+            }
+        })
     }
 
     private setElementAttributes(element: Element, segment: StringFormatSegment) {

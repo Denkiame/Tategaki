@@ -69,6 +69,7 @@ class Tategaki {
             imitatePcS: true,
             imitatePcFwid: true,
             imitateTcyShortWord: false,
+            shouldAdjustOrphanLine: false,
             shouldRemoveStyle: false,
             convertNewlineCustom: false
         };
@@ -83,6 +84,23 @@ class Tategaki {
         this.format(this.rootElement);
         this.tcy();
         this.correctAmbiguous();
+        if (this.config.shouldAdjustOrphanLine) {
+            this.insertWordJoiner();
+        }
+    }
+    insertWordJoiner() {
+        let paras = Array.from(this.rootElement.querySelectorAll('p:not(.no-indent):not(.original-post)'));
+        paras.forEach(para => {
+            let children = para.children;
+            let lastButOneSpan = children[children.length - 2];
+            let re = /\p{Script_Extensions=Han}{2}$/gu;
+            if (lastButOneSpan.classList.length === 0 &&
+                re.test(lastButOneSpan.innerHTML)) {
+                let text = lastButOneSpan.innerHTML;
+                lastButOneSpan.innerHTML =
+                    text.slice(0, -1) + '&#8288;' + text.slice(-1, text.length);
+            }
+        });
     }
     setElementAttributes(element, segment) {
         switch (segment.formatGuide) {

@@ -4,6 +4,7 @@ interface Config {
     imitatePcS?: boolean;
     imitatePcFwid?: boolean;
     imitateTcyShortWord?: boolean;
+    shouldAdjustOrphanLine?: boolean;
     shouldRemoveStyle?: boolean;
     convertNewlineCustom?: boolean;
 }
@@ -12,6 +13,7 @@ export declare class Tategaki {
     config: Config;
     constructor(rootElement: Element, config?: Config);
     parse(): void;
+    private insertWordJoiner;
     private setElementAttributes;
     private postProcess;
     private format;
