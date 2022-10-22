@@ -1,6 +1,6 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
+Object.defineProperties(exports, { __esModule: { value: true }, [Symbol.toStringTag]: { value: 'Module' } });
 
 var StringFormatGuide;
 (function (StringFormatGuide) {
@@ -93,16 +93,19 @@ class Tategaki {
         }
     }
     insertWordJoiner() {
-        let paras = Array.from(this.rootElement.querySelectorAll('p:not(.no-indent):not(.original-post)'));
+        let paras = Array.from(this.rootElement.querySelectorAll('p:not(.original-post)'));
         paras.forEach(para => {
             let children = para.children;
+            if (children.length < 2) {
+                return;
+            }
             let lastButOneSpan = children[children.length - 2];
             let re = /\p{Script_Extensions=Han}{2}$/gu;
             if (lastButOneSpan.classList.length === 0 &&
                 re.test(lastButOneSpan.innerHTML)) {
                 let text = lastButOneSpan.innerHTML;
                 lastButOneSpan.innerHTML =
-                    text.slice(0, -1) + '&#8288;' + text.slice(-1, text.length);
+                    text.slice(0, -1) + '&NoBreak;' + text.slice(-1, text.length);
             }
         });
     }
@@ -270,7 +273,7 @@ class Tategaki {
                     if (digit.length === 1) {
                         digit = this.transfromToFullWidth(digit);
                     }
-                    newElement.innerHTML = `<span ${digit.length == 1 ? '' : 'class="tcy"'}>${digit}</span>&#8288;％`;
+                    newElement.innerHTML = `<span ${digit.length == 1 ? '' : 'class="tcy"'}>${digit}</span>&NoBreak;％`;
                     element.replaceWith(newElement);
                 }
                 else {

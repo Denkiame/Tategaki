@@ -55,18 +55,21 @@ export class Tategaki {
         if (this.config.shouldAdjustOrphanLine) { this.insertWordJoiner() }
     }
 
+    // TODO: Check number of characters in a paragraph
+    // to skip a paragraph which has only one line.
     private insertWordJoiner() {
         let paras = Array.from(
-            this.rootElement.querySelectorAll('p:not(.no-indent):not(.original-post)'))
+            this.rootElement.querySelectorAll('p:not(.original-post)'))
         paras.forEach(para => {
             let children = para.children
+            if (children.length < 2) { return }
             let lastButOneSpan = children[children.length-2]
             let re = /\p{Script_Extensions=Han}{2}$/gu
             if (lastButOneSpan.classList.length === 0 &&
                 re.test(lastButOneSpan.innerHTML)) {
                 let text = lastButOneSpan.innerHTML
                 lastButOneSpan.innerHTML =
-                    text.slice(0, -1) + '&#8288;' + text.slice(-1, text.length)
+                    text.slice(0, -1) + '&NoBreak;' + text.slice(-1, text.length)
             }
         })
     }
@@ -267,7 +270,7 @@ export class Tategaki {
                     if (digit.length === 1) {
                         digit = this.transfromToFullWidth(digit)
                     }
-                    newElement.innerHTML = `<span ${digit.length == 1 ? '' : 'class="tcy"'}>${digit}</span>&#8288;％`
+                    newElement.innerHTML = `<span ${digit.length == 1 ? '' : 'class="tcy"'}>${digit}</span>&NoBreak;％`
                     element.replaceWith(newElement)
                 } else {  // Measure height of the element to decide if TCY
                     if (this.config.imitateTcyShortWord) {
