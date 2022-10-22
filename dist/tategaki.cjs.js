@@ -117,6 +117,7 @@ class Tategaki {
             }
             case StringFormatGuide.latin: {
                 element.setAttribute('lang', 'en');
+                element.setAttribute('title', segment.content);
                 break;
             }
             case StringFormatGuide.kana: {
@@ -247,6 +248,7 @@ class Tategaki {
                     element.classList.add('tcy-single');
                     element.classList.remove('latin');
                     element.removeAttribute('lang');
+                    element.removeAttribute('title');
                 }
                 else if (/^([A-Z]{3,10}|\d{4,10})$/.test(text)) {
                     if (this.config.imitatePcFwid) {
@@ -259,11 +261,13 @@ class Tategaki {
                     element.classList.add('tcy-single');
                     element.classList.remove('latin');
                     element.removeAttribute('lang');
+                    element.removeAttribute('title');
                 }
                 else if (/^[A-Z]{2}$|^\d{2,3}$/.test(text)) {
                     element.innerHTML = text;
                     element.classList.remove('latin');
                     element.removeAttribute('lang');
+                    element.removeAttribute('title');
                     element.classList.add('tcy');
                 }
                 else if (/^\d{1,3}%$/.test(text)) {
