@@ -64,8 +64,8 @@ export class Tategaki {
             let children = para.children
             if (children.length < 2) { return }
             let lastButOneSpan = children[children.length-2]
-            let re = /\p{Script_Extensions=Han}{2}$/gu
-            if (lastButOneSpan.classList.length === 0 &&
+            let re = /[\p{Script_Extensions=Han}\p{Script_Extensions=Hiragana}\p{Script_Extensions=Katakana}]{2}$/gu
+            if ((lastButOneSpan.classList.length === 0 || lastButOneSpan.classList.contains('kana')) &&
                 re.test(lastButOneSpan.innerHTML)) {
                 let text = lastButOneSpan.innerHTML
                 lastButOneSpan.innerHTML =
