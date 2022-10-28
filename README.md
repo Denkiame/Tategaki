@@ -34,15 +34,17 @@ interface Config {
     shouldPcS?: boolean
     /** Use customised PcS tagging instead of OpenType feature `vhal`. */
     imitatePcS?: boolean
-    /** Transform certain half-width punctuations to full-width ones without using OpenType `fwid`. */
+    /** Transform certain half-width puncuations to full-width ones without using OpenType `fwid`. */
     imitatePcFwid?: boolean
 
-    /**
+    /* imitateTcyShortWord?: boolean (Deprecated)
+     *
      * Rotate words of short length.
      * The original width of a word will be calculated and compared with a threshold value.
-     * (Buggy in WebKit on macOS Ventura Beta)
      */
-    imitateTcyShortWord?: boolean
+
+    /** Not allow the last line of a paragraph to only contain a single Kanji. */
+    shouldAdjustOrphanLine?: boolean
 
     /** Remove `style`, `width` and `height` attributes. */
     shouldRemoveStyle?: boolean
@@ -56,7 +58,15 @@ interface Config {
 - Punctuation Squeeze (PcS) will be **automatically applied**. You can turn it off when initialising.
 - You can also import `tategaki.css` (listed below) for styling.
 
-### Or embedded in HTML
+#### Advanced
+
+You can also use your own DOM (like `linkedom`, `JSDOM`):
+
+```TypeScript
+let tategaki = new Tategaki(article, config, document)
+```
+
+### Embedded in HTML
 
 - In `<head>`:
 

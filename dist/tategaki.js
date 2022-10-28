@@ -3,18 +3,19 @@ import './extensions';
 export class Tategaki {
     rootElement;
     config;
-    constructor(rootElement, config) {
+    document;
+    constructor(rootElement, config, __document) {
         this.rootElement = rootElement;
         const defaultConfig = {
             shouldPcS: true,
             imitatePcS: true,
             imitatePcFwid: true,
-            imitateTcyShortWord: false,
             shouldAdjustOrphanLine: false,
             shouldRemoveStyle: false,
             convertNewlineCustom: false
         };
         this.config = Object.assign({}, defaultConfig, config);
+        this.document = __document ?? document;
     }
     parse() {
         this.rootElement.classList.add('tategaki');
@@ -77,7 +78,7 @@ export class Tategaki {
         return text;
     }
     format(node, passUntilPara = true) {
-        if (node.nodeType === Node.TEXT_NODE) {
+        if (node.nodeType === this.document.TEXT_NODE) {
             let text = node.nodeValue;
             if (text && !text.trim()) {
                 return;
@@ -91,8 +92,8 @@ export class Tategaki {
             }
             else {
                 segments.forEach(segment => {
-                    let subElement = document.createElement('span');
-                    subElement.innerText = segment.content;
+                    let subElement = this.document.createElement('span');
+                    subElement.innerHTML = segment.content;
                     this.setElementAttributes(subElement, segment);
                     parentElement.insertBefore(subElement, node);
                 });
@@ -103,8 +104,8 @@ export class Tategaki {
         if (node.nodeName == 'BR') {
             let parentElement = node.parentElement;
             if (parentElement) {
-                const br = document.createElement('br');
-                let span = document.createElement('span');
+                const br = this.document.createElement('br');
+                let span = this.document.createElement('span');
                 span.classList.add('indent');
                 parentElement.insertBefore(br, node);
                 parentElement.insertBefore(span, node);
@@ -162,9 +163,6 @@ export class Tategaki {
         return String.fromCharCode(current - base + newBase);
     }
     tcy() {
-        let documentElement = document.documentElement;
-        let fontSizeMatch = window.getComputedStyle(documentElement).fontSize.match(/(\d+)px/);
-        let fontSize = fontSizeMatch ? parseInt(fontSizeMatch[1]) : 0;
         let elements = Array.from(this.rootElement.getElementsByClassName(StringFormatGuide.latin));
         elements.forEach(element => {
             const text = element.innerHTML.trim();
@@ -216,7 +214,7 @@ export class Tategaki {
                 }
                 else if (/^\d{1,3}%$/.test(text)) {
                     const matches = /^(\d{1,3})%$/.exec(text);
-                    let newElement = document.createElement('span');
+                    let newElement = this.document.createElement('span');
                     let digit = matches[1];
                     if (digit.length === 1) {
                         digit = this.transfromToFullWidth(digit);
@@ -224,26 +222,11 @@ export class Tategaki {
                     newElement.innerHTML = `<span ${digit.length == 1 ? '' : 'class="tcy"'}>${digit}</span>&NoBreak;％`;
                     element.replaceWith(newElement);
                 }
-                else {
-                    if (this.config.imitateTcyShortWord) {
-                        let threshold = fontSize;
-                        if (element.innerHTML != text) {
-                            threshold *= 1.5;
-                        }
-                        else {
-                            threshold *= 1.333;
-                        }
-                        if (element.getBoundingClientRect().height <= threshold) {
-                            element.innerHTML = text;
-                            element.classList.add('tcy');
-                        }
-                    }
-                }
             }
         });
     }
     correctAmbiguous() {
-        Array.from(document.getElementsByClassName(StringFormatGuide.ambiguous), element => {
+        Array.from(this.rootElement.getElementsByClassName(StringFormatGuide.ambiguous), element => {
             if (element.innerHTML === '――') {
                 element.classList.add('aalt-on');
                 element.classList.add(StringFormatGuide.cjkPunc);
