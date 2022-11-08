@@ -1,0 +1,356 @@
+@font-face {
+    font-family: Kai;
+    src: local("Kaiti TC Regular"), local(STKaiTi-TC-Regular), local("Kaiti TC"), local("Kaiti SC"), local(STKaiti), local(BiauKai), local("標楷體"), local(DFKaiShu-SB-Estd-BF), local(Kaiti), local(DFKai-SB);
+}
+
+@font-face {
+    font-family: BopomofoRuby;
+    src: url(https://raw.githubusercontent.com/cmex-30/Bopomofo_on_Web/master/font/BopomofoRuby1909-v1-Regular.ttf);
+}
+
+:root {
+    --font-size: 18px;
+    --height: 32rem;
+    --foreground-colour: #21272e;
+    --background-colour: #fdfdfc;
+    --a-colour: #438fa2;
+    --selection-colour: #438fa232;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        --foreground-colour: #fffffee3;
+        --background-colour: #181a1b;
+        --a-colour: #56b8cd;
+        --selection-colour: #56b8cd32;
+    }
+}
+
+
+html,
+body {
+    writing-mode: vertical-rl;
+    font-size: var(--font-size);
+}
+
+body {
+    font-family: 'Source Han Serif TC', source-han-serif-tc, serif;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--foreground-colour);
+
+    background-color: var(--background-colour);
+    
+    overscroll-behavior: none;
+}
+
+.side-mask {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100vw;
+
+    overflow-x: auto;
+    overscroll-behavior: none;
+
+    mask: 
+        linear-gradient(to right, rgba(0,0,0,0.12), black 0.27rem) left, 
+        linear-gradient(to left, rgba(0,0,0,0.12), black 0.27rem) right;
+    mask-repeat: no-repeat;
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
+}
+
+article {
+    margin: 3.667rem 3.334rem;
+    height: var(--height);
+
+    font-size: 1rem;
+    line-height: 1.667;
+    text-align: justify;
+
+    /* For notches */
+    padding-right: calc(env(safe-area-inset-right) - 1.667rem);
+    padding-left: calc(env(safe-area-inset-left) - 1.667rem);
+}
+
+.latin {
+    font-family: 'Crimson Pro', serif;
+    /* Can be ignored */
+    font-weight: 345;
+
+    position: relative;
+    left: 0.088rem;
+}
+
+.cjk-punc, .tcy, .tcy-single {
+    font-family: source-han-serif-tc, 'Source Han Serif TC', serif;
+}
+
+#heading {
+    margin-left: 5rem;
+}
+
+h1, h1 .cjk-punc, h1 .tcy, h1 .tcy-single {
+    font-family: source-han-sans-cjk-tc, 'Source Han Sans TC', sans-serif;
+    font-weight: 700;
+}
+
+h1 .latin {
+    font-family: 'Signika Negative', sans-serif;
+    font-weight: 669;
+    left: 0.036rem;
+}
+
+p:not(:first-of-type):not(.original-post) {
+    text-indent: 1rem;
+}
+
+blockquote p:first-of-type {
+    text-indent: 1rem;
+}
+
+blockquote {
+    font-family: Kai, serif;
+}
+
+img {
+    height: var(--height);
+}
+
+
+figure {
+    margin: 0 1.667rem 0;
+}
+
+figcaption {
+    opacity: 0.87;
+}
+
+a { color: var(--a-colour); }
+
+/* CJK Emphasis  */
+em  {
+    font-style: normal;
+    text-emphasis: '\25AA';
+    -webkit-text-emphasis: '\25AA';
+    /* Would it be nice if offset can be customised */
+}
+
+em.latin, em .latin {
+    font-style: italic;
+    text-emphasis: none;
+    -webkit-text-emphasis: none;          
+}
+
+/* Lists */
+ul { list-style-type: '\25AA\0020'; }
+
+ol {
+    list-style-type: trad-chinese-informal;
+    list-style-position: inside;
+}
+
+ol li {
+    margin: 0;
+    text-indent: 1rem;
+    text-align: justify;
+}
+
+rt {
+    font-size: 0.45rem;
+    
+    ruby-align: center;
+    text-align: center;
+    letter-spacing: 0;
+
+    font-feature-settings: "vpal";
+
+    -webkit-font-smoothing: initial;
+    -moz-osx-font-smoothing: initial;
+    text-rendering: initial;
+}
+
+rt.bopomofo {
+    font-family: BopomofoRuby;
+    text-orientation: upright;
+}
+
+rt.pinyin {
+    font-size: 0.6rem;
+    font-family: 'Crimson Pro', serif;
+
+    position: relative;
+    left: 0.1rem;
+}
+
+hr {
+    border: none;
+    margin: 0;
+}
+
+hr::before {
+    content: "❧";
+    display: block;
+    text-align: center;
+    margin: 0 1.667rem;
+
+    height: var(--height);
+    position: relative;
+    left: 0.273rem;
+}
+
+.indent {
+    text-indent: var(--font-size);
+}
+
+.no-indent {
+    text-indent: 0;
+}
+
+.original-post {
+    margin-right: 1.667rem;
+}
+
+::-moz-selection {
+    background: var(--selection-colour);
+}
+  
+::selection {
+    background: var(--selection-colour);
+}
+
+@media screen and (max-height: 708px) {
+    :root {
+        --height: 31rem;
+    }
+}
+
+@media screen and (max-height: 690px) {
+    :root {
+        --height: 30rem;
+    }
+}
+
+@media screen and (max-height: 672px) {
+    :root {
+        --height: 29rem;
+    }
+}
+
+@media screen and (max-height: 654px) {
+    :root {
+        --height: 28rem;
+    }
+}
+
+@media screen and (max-height: 636px) {
+    :root {
+        --font-size: 16px;
+        --height: 32rem;
+    }
+}
+
+@media screen and (max-height: 629.3px) {
+    :root {
+        --height: 31rem;
+    }
+}
+
+@media screen and (max-height: 613.3px) {
+    :root {
+        --height: 30rem;
+    }
+}
+
+@media screen and (max-height: 597.3px) {
+    :root {
+        --height: 29rem;
+    }
+}
+
+@media screen and (max-height: 581.3px) {
+    :root {
+        --height: 28rem;
+    }
+}
+
+@media screen and (max-height: 565.3px) {
+    article {
+        margin: max(calc((100vh - 28rem) / 2), 2rem) max(calc((100vh - 28rem) / 2 - 0.3335rem), 1.6665rem);
+    }
+}
+
+@media screen and (max-height: 512px) {
+    :root {
+        --height: 27rem;
+    }
+    article {
+        margin: 2rem 1.6665rem;
+    }
+}
+
+@media screen and (max-height: 496px) {
+    :root {
+        --height: 26rem;
+    }
+}
+
+@media screen and (max-height: 480px) {
+    :root {
+        --height: 25rem;
+    }
+}
+
+@media screen and (max-height: 464px) {
+    :root {
+        --height: 24rem;
+    }
+}
+
+@media screen and (max-height: 448px) {
+    :root {
+        --height: 23rem;
+    }
+}
+
+@media screen and (max-height: 432px) {
+    :root {
+        --height: 22rem;
+    }
+}
+
+@media screen and (max-height: 416px) {
+    :root {
+        --height: 21rem;
+    }
+}
+
+@media screen and (max-height: 400px) {
+    :root {
+        --height: 20rem;
+    }
+}
+
+@media screen and (max-height: 384px) {
+    :root {
+        --height: 19rem;
+    }
+}
+
+@media screen and (max-height: 368px) {
+    :root {
+        --height: 18rem;
+    }
+}
+
+/* Override Tategaki default  */
+.tategaki {
+    hanging-punctuation: none;
+}
+
+/* Fix space height  */
+.squeeze-out-space::before, .squeeze-in-space::before {
+    content: "\0020";
+    font: 0.833em Courier;  /* Alternative font. Its U+0020 must be wider than that in CJK font. */
+}
