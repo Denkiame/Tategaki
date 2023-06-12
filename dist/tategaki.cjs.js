@@ -12,6 +12,12 @@ var StringFormatGuide;
     StringFormatGuide["ambiguous"] = "ambiguous";
 })(StringFormatGuide || (StringFormatGuide = {}));
 
+String.prototype.replaceDebug = function (re, to) {
+    let str = String(this);
+    if (str !== str.replace(re, to))
+        console.log(str, str.replace(re, to));
+    return str.replace(re, to);
+};
 String.prototype.segmentise = function (re) {
     let str = String(this);
     let segments = [];
@@ -146,7 +152,7 @@ class Tategaki {
                 return;
             }
             text = this.correctPuncs(text);
-            let re = /([\u002f\u2013]+|――)|([\u203c\u2047-\u2049\u3001\u3002\u301d\u301f\uff01\uff0c\uff1a\uff1b\uff1f\u3008-\u3011\u3014-\u301B\uff08\uff09]+)|([\uff21-\uff3a\uff41-\uff5a]+)|([\p{Script=Latin}0-9\u0020-\u0023\u0025-\u002b\u002c-\u002e\u003a\u003b\u003f\u0040\u005b-\u005d\u005f\u007b\u007d\u00a0\u00a1\u00a7\u00ab\u00b2\u00b3\u00b6\u00b7\u00b9\u00bb-\u00bf\u2010-\u2012\u2018\u2019\u201c\u201d\u2020\u2021\u2026\u2027\u2030\u2032-\u2037\u2039\u203a\u203d-\u203e\u204e\u2057\u2070\u2074-\u2079\u2080-\u2089\u2150\u2153\u2154\u215b-\u215e\u2160-\u217f\u2474-\u249b\u2e18\u2e2e]+)|([\u3041-\u309f\u30a0-\u30fa\u30fc\u30ff]+)/gu;
+            let re = /([\u002f\u2013]+|――|⋯⋯)|([\u203c\u2047-\u2049\u3001\u3002\u301d\u301f\uff01\uff0c\uff1a\uff1b\uff1f\u3008-\u3011\u3014-\u301B\uff08\uff09]+)|([\uff21-\uff3a\uff41-\uff5a]+)|([\p{Script=Latin}0-9\u0020-\u0023\u0025-\u002b\u002c-\u002e\u003a\u003b\u003f\u0040\u005b-\u005d\u005f\u007b\u007d\u00a0\u00a1\u00a7\u00ab\u00b2\u00b3\u00b6\u00b7\u00b9\u00bb-\u00bf\u2010-\u2012\u2018\u2019\u201c\u201d\u2020\u2021\u2026\u2027\u2030\u2032-\u2037\u2039\u203a\u203d-\u203e\u204e\u2057\u2070\u2074-\u2079\u2080-\u2089\u2150\u2153\u2154\u215b-\u215e\u2160-\u217f\u2474-\u249b\u2e18\u2e2e]+)|([\u3041-\u309f\u30a0-\u30fa\u30fc\u30ff]+)/gu;
             let segments = text.segmentise(re);
             let parentElement = node.parentElement;
             if (!parentElement.childElementCount && segments.length === 1) {
@@ -284,6 +290,10 @@ class Tategaki {
         Array.from(this.rootElement.getElementsByClassName(StringFormatGuide.ambiguous), element => {
             if (element.innerHTML === '――') {
                 element.classList.add('aalt-on');
+                element.classList.add(StringFormatGuide.cjkPunc);
+                return;
+            }
+            if (element.innerHTML === '⋯⋯') {
                 element.classList.add(StringFormatGuide.cjkPunc);
                 return;
             }

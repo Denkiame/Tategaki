@@ -1,4 +1,10 @@
 import { StringFormatGuide } from './formatSegment';
+String.prototype.replaceDebug = function (re, to) {
+    let str = String(this);
+    if (str !== str.replace(re, to))
+        console.log(str, str.replace(re, to));
+    return str.replace(re, to);
+};
 String.prototype.segmentise = function (re) {
     let str = String(this);
     let segments = [];

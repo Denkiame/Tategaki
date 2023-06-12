@@ -3,7 +3,16 @@ import { StringFormatSegment, StringFormatGuide } from './formatSegment'
 declare global {
     interface String {
         segmentise(re: RegExp): StringFormatSegment[]
+        
+        replaceDebug(re: RegExp, str: string): String
     }
+}
+
+String.prototype.replaceDebug = function(re, to) {
+    let str = String(this)
+    if (str !== str.replace(re, to))
+        console.log(str, str.replace(re, to))
+    return str.replace(re, to)
 }
 
 /** Separate the string into parts. Each part continas its `StringFormatGuide` type */
