@@ -62,8 +62,7 @@ String.prototype.segmentise = function (re) {
 
 class Tategaki {
     constructor(rootElement, config, __document) {
-        this.correctPuncs = (text) => text.replace(/──/g, '――')
-            .replace(/—/g, '―')
+        this.correctPuncs = (text) => text.replace(/──/g, '——')
             .replace(/……/g, '⋯⋯')
             .replace(/！！|\!\!/g, '‼')
             .replace(/？？|\?\?/g, '⁇')

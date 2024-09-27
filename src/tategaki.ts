@@ -175,8 +175,7 @@ export class Tategaki {
 
     /** Raw replacements for specific puncs to be correctly displayed */
     private correctPuncs = (text: string) =>
-        text.replace(/──/g, '――')  // U+2500 -> U+2015
-            .replace(/—/g, '―')  // U+2014 (EM dash) -> U+2015
+        text.replace(/──/g, '——')  // U+2500 -> U+2014
             // Go evil with Apple Inc.
             .replace(/……/g, '⋯⋯')
             .replace(/！！|\!\!/g, '‼')

@@ -130,8 +130,7 @@ export class Tategaki {
             this.removeStyle(child);
         });
     }
-    correctPuncs = (text) => text.replace(/──/g, '――')
-        .replace(/—/g, '―')
+    correctPuncs = (text) => text.replace(/──/g, '——')
         .replace(/……/g, '⋯⋯')
         .replace(/！！|\!\!/g, '‼')
         .replace(/？？|\?\?/g, '⁇')

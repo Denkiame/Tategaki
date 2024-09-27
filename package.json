@@ -1,6 +1,6 @@
 {
   "name": "tategaki",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Transform HTML elements into vertical writing (Tategaki)",
   "main": "dist/tategaki.cjs.js",
   "module": "dist/tategaki.es.js",
@@ -22,7 +22,7 @@
     "typography",
     "cjk"
   ],
-  "author": "Toto Minai <the@unpopular.me> (https://chunghwa.asia)",
+  "author": "Toto <to@junshi.jp> (https://chunghwa.asia)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/denkiame/tategaki.js/issues"
